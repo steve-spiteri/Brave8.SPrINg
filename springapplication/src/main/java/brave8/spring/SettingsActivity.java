@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
+//Look at all the fish
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
