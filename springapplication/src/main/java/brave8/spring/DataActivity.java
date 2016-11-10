@@ -24,6 +24,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.Random;
 
+//WHat is hapen
 public class DataActivity extends AppCompatActivity {
 
     GraphView graph;
