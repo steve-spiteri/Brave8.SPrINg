@@ -14,7 +14,7 @@ import android.widget.EditText;
 
 public class LoginActivity extends AppCompatActivity {
 
-    //Salvatore
+    //Salvatore was here
     Button signIn;
     EditText dbUser;
     EditText dbPass;
