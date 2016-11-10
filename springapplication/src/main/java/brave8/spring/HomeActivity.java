@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+//RICK
 public class HomeActivity extends AppCompatActivity {
 
     @Override
