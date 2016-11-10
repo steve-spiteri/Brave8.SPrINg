@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-//RICKy
+//RICKy is best
 public class HomeActivity extends AppCompatActivity {
 
     @Override
