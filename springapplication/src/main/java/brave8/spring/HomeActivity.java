@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-//RICK
+//RICKy is foney
 public class HomeActivity extends AppCompatActivity {
 
     @Override
