@@ -43,11 +43,11 @@
         <item>Light</item>
     </string-array>
 
-    <string-arry name="time_array">
+    <string-array name="time_array">
         <item>1 Day</item>
         <item>7 Days</item>
         <item>30 Days</item>
-    </string-arry>
+    </string-array>
 
 
 </resources>
