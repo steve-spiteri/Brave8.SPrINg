@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -177,6 +180,33 @@ public class PageFragment extends Fragment {
         else {
             view = inflater.inflate(R.layout.activity_settings, container, false);
 
+            //app theme
+            Switch theme_switch = (Switch)view.findViewById(R.id.controls_application_theme);
+            final TextView theme_text = (TextView)view.findViewById(R.id.text_theme_name);
+            theme_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        //ThemeUtils.changeToTheme(getActivity(), ThemeUtils.DARK);
+                        theme_text.setText(R.string.dark_theme);
+                    } else {
+                        //ThemeUtils.changeToTheme(getActivity(), ThemeUtils.LIGHT);
+                        theme_text.setText(R.string.light_theme);
+                    }
+                }
+            });
+
+            Switch temperature_switch = (Switch)view.findViewById(R.id.controls_change_temperature);
+            final TextView temperature_text = (TextView)view.findViewById(R.id.text_temperature);
+            temperature_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        temperature_text.setText(R.string.fahrenheit);
+
+                    } else {
+                        temperature_text.setText(R.string.celsius);
+                    }
+                }
+            });
 
         }
 

@@ -9,7 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:background="@color/white"
     tools:context=".LoginActivity">
 
     <!--logo-->
@@ -34,7 +33,6 @@
             android:id="@+id/login_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:textSize="@dimen/large"
             android:text="@string/login"/>
 
@@ -50,7 +48,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/activity_vertical_margin"
-            android:textColor="@color/black"
             android:textSize="@dimen/small"
             android:text="@string/username"/>
         <EditText
@@ -64,7 +61,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/activity_vertical_margin"
-            android:textColor="@color/black"
             android:textSize="@dimen/small"
             android:text="@string/password"/>
         <EditText

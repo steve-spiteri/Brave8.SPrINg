@@ -12,13 +12,21 @@
             android:id="@+id/text_about_application"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/about_application"/>
+            android:text="@string/about_application"
+            style="@style/settings_text" />
+
+        <TextView
+            android:id="@+id/text_information"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_about_application"
+            android:text="@string/app_information" />
 
         <View
             android:id="@+id/divider_about_application"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:layout_below="@id/text_about_application"
+            android:layout_below="@id/text_information"
             android:background="@color/black" />
 
         <TextView
@@ -26,13 +34,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/divider_about_application"
-            android:text="@string/application_theme"/>
+            android:text="@string/application_theme"
+            style="@style/settings_text"/>
 
         <Switch
             android:id="@+id/controls_application_theme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/text_application_theme"/>
+            android:layout_below="@id/text_application_theme" />
 
         <TextView
             android:id="@+id/text_theme_name"
@@ -42,7 +51,34 @@
             android:text="@string/light_theme"
             android:layout_toRightOf="@id/controls_application_theme"/>
 
+        <View
+            android:id="@+id/divider_application_theme"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/controls_application_theme"
+            android:background="@color/black" />
 
+        <TextView
+            android:id="@+id/text_change_temperature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider_application_theme"
+            android:text="@string/change_temperature_measurement"
+            style="@style/settings_text" />
+
+        <Switch
+            android:id="@+id/controls_change_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_change_temperature"/>
+
+        <TextView
+            android:id="@+id/text_temperature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_change_temperature"
+            android:text="@string/celsius"
+            android:layout_toRightOf="@id/controls_change_temperature"/>
 
     </RelativeLayout>
 </ScrollView>
