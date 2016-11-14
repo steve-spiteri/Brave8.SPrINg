@@ -29,7 +29,7 @@ public class SolarDataSource {
 
     //public static final String DATA_URL = " http://a77a1a4f.ngrok.io/spring/test2.php?id=";
     public static final String DATA_URL = " http://a77a1a4f.ngrok.io/spring/test2.php";
-    public static final String DATA_URL_FETCH_BY_LOGIN = " http://a77a1a4f.ngrok.io/spring/fetch_data_by_login.php?id=";
+    public static final String DATA_URL_FETCH_BY_LOGIN = " http://c1f13104.ngrok.io/spring/fetch_data_by_login.php?id=";
     public static final String KEY_ID_DATA = "id_data";
     public static final String KEY_ID_LOGIN = "id_login";
     public static final String KEY_POWER = "power";
