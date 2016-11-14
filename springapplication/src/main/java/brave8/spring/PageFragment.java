@@ -95,15 +95,15 @@ public class PageFragment extends Fragment {
                 power[i]= 1.0 + (20.0 - 1.0) * rn.nextDouble();
             }
 
-            Spinner spinner = (Spinner) view.findViewById(R.id.spinner1);
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.planets_array, android.R.layout.simple_spinner_item);
+            Spinner spinner1 = (Spinner) view.findViewById(R.id.spinner1);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.source_array, android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(adapter);
+            spinner1.setAdapter(adapter);
 
-            Spinner dropdown2 = (Spinner)view.findViewById(R.id.spinner2);
-            String[] items2 = new String[]{"1 Day", "7 Days", "30 Days"};
-            ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items2);
-            dropdown2.setAdapter(adapter2);
+            Spinner spinner2 = (Spinner) view.findViewById(R.id.spinner2);
+            ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getActivity(), R.array.time_array, android.R.layout.simple_spinner_item);
+            adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner2.setAdapter(adapter2);
 
             graph = (GraphView) view.findViewById(R.id.graph);
 
@@ -121,7 +121,7 @@ public class PageFragment extends Fragment {
             graph.getGridLabelRenderer().reloadStyles();
             //-----------
 
-            dropdown2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+            spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
             {
                 public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                     if(pos==0){
