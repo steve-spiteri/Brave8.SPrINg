@@ -22,14 +22,20 @@
     <string name="data">Données</string>
     <string name="settings">Paramètres</string>
 
-    <string name="power_message_total">Total de l\'énergie produite aujourd\'hui</string>
-    <string name="power_message_peak">Puissance maximale à %1$s aujourd\'hui</string>
-    <string name="power_message_current">Puissance actuelle</string>
-    <string name="lux_message_sunny">Ensoleillé</string>
-    <string name="lux_message_overcast">Couvert</string>
-    <string name="lux_message_night">Nuit</string>
-    <string name="humidity">Humidité</string>
-    <string name="barometric_pressure">Pression barométrique</string>
+    <string name="power_text">Puissance produit</string>
+    <string name="humidity_text">Humidité</string>
+    <string name="temperature_text">Température</string>
+    <string name="barometric_text">Pression barométrique</string>
+    <string name="sunny">Ensoleillé</string>
+    <string name="overcast">Couvert</string>
+    <string name="night">Nuit</string>
+
+
+    <string name="power_data">%1$.2f kWh</string>
+    <string name="humidity_data">%1$.0f%%</string>
+    <string name="temperature_data">%1$.2f %2$s</string>
+    <string name="barometric_date">%1$.2f kPa</string>
+    <string name="light_date">%1$s</string>
 
     <!--data-->
     <string-array name="source_array">

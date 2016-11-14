@@ -1,9 +1,7 @@
 package brave8.spring;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -34,30 +32,12 @@ import org.json.JSONException;
 
 import java.util.List;
 import java.util.Random;
-//test
+
 public class PageFragment extends Fragment implements OnItemSelectedListener {
-    //public static final String DATA_URL = " http://a77a1a4f.ngrok.io/spring/test2.php?id=";
-    public static final String DATA_URL = " http://a77a1a4f.ngrok.io/spring/test2.php";
+
     public static final String DATA_URL_FETCH_BY_LOGIN = " http://c1f13104.ngrok.io/spring/fetch_data_by_login.php?id=2";
-    public static final String KEY_ID_DATA = "id_data";
-    public static final String KEY_ID_LOGIN = "id_login";
-    public static final String KEY_POWER = "power";
-    public static final String KEY_TEMPERATURE = "temperature";
-    public static final String KEY_LIGHT = "light";
-    public static final String KEY_BAROMETRIC = "bar_pressure";
-    public static final String KEY_HUMIDITY = "humidity";
-    public static final String KEY_TIME = "time";
-    public static final String KEY_DATE = "date";
-    public static final String JSON_ARRAY = "result";
-
-    Context context;
-    private EditText editTextId;
-    private Button buttonGet;
-    private TextView textViewResult;
-
     private ProgressDialog loading;
 
-    private String jsonReturn = "";
     public static final String ARG_PAGE = "ARG_PAGE";
 
     private int mPage;
@@ -70,7 +50,6 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     List<Solar> solarList;
     Spinner spinner1;
     Spinner spinner2;
-    int spinner2Pos = 0;
     GridLabelRenderer gridLabelRenderer;
 
     double[] power;
@@ -137,16 +116,8 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     }
 
     public void displayData(View view, String response) {
-
-
-        /////////////////
-
-        power = new double[2];
         SolarDataSource solarDataSource = new SolarDataSource(getContext());
         try {
-            //String jsonData = solarDataSource.getData();
-
-            //Initialize array sizes
             solarList = solarDataSource.createSolarList(response);
             power = new double[solarList.size()];
             temperature = new double[solarList.size()];
@@ -174,34 +145,32 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             e.printStackTrace();
         }
 
-        /////////////////
-
         if (mPage == 1) {
             //home activity
 
-            TextView world_data = (TextView) view.findViewById(R.id.world_icon_data);
-            //insert code to retrieve from data base
-            world_data.setText("17.3" + " kWh");
+            //set date
+            TextView date_text = (TextView) view.findViewById(R.id.date_text);
+            date_text.setText(date[date.length-1]);
 
-            TextView barchart_data = (TextView) view.findViewById(R.id.barchart_icon_data);
-            //insert code to retrieve from data base
-            barchart_data.setText("3.44" + " kWh");
+            //set time
+            TextView time_text = (TextView) view.findViewById(R.id.time_text);
+            time_text.setText(time[time.length-1]);
 
-            TextView bolt_data = (TextView) view.findViewById(R.id.bolt_icon_data);
-            //insert code to retrieve from data base
-            bolt_data.setText("2.17" + " kWh");
+            TextView power_data = (TextView) view.findViewById(R.id.power_data);
+            power_data.setText(getResources().getString(R.string.power_data,power[power.length-1]));
 
-            TextView sun_data = (TextView) view.findViewById(R.id.sun_icon_data);
-            //insert code to retrieve from data base
-            sun_data.setText("17" + " C");
+            TextView humidity_text = (TextView) view.findViewById(R.id.humidity_data);
+            humidity_text.setText(getResources().getString(R.string.humidity_data,humidity[humidity.length-1]));
 
-            TextView raindrop_data = (TextView) view.findViewById(R.id.raindrop_icon_data);
-            //insert code to retrieve from data base
-            raindrop_data.setText("45" + "%");
+            TextView temperature_text = (TextView) view.findViewById(R.id.temperature_data);
+            temperature_text.setText(getResources().getString(R.string.temperature_data,temperature[temperature.length-1],"C"));
 
-            TextView updown_data = (TextView) view.findViewById(R.id.updown_icon_data);
-            //insert code to retrieve from data base
-            updown_data.setText("101 355" + " kPa");
+            TextView barometric_text = (TextView) view.findViewById(R.id.barometric_data);
+            barometric_text.setText(getResources().getString(R.string.barometric_date,barometric[barometric.length-1]));
+
+            TextView light_text = (TextView) view.findViewById(R.id.light_data);
+            light_text.setText("Sunny");
+
         }
         else if (mPage == 2) {
 
@@ -557,20 +526,4 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     public void onNothingSelected(AdapterView<?> parent)
     {}
 
-    public void rangeSpinner(){
-        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                if(pos == 0){
-                    spinner2Pos = 0;
-                }
-                else if(pos == 1) {
-                    spinner2Pos = 1;
-                }
-                else if(pos == 2) {
-                    spinner2Pos = 2;
-                }
-            }
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
-    }
 }

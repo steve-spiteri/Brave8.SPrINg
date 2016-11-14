@@ -1,7 +1,7 @@
 package brave8.spring;
 
 import java.sql.Date;
-//test
+
 /**
  * Created by Ricky on 2016-11-11.
  */

@@ -24,82 +24,23 @@
             android:textStyle="bold"
             android:gravity="center_horizontal"/>
 
+        <!--time-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/time_text"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="15dp">
 
-            <!--total power produced today-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/blue_border"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_worldwide"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/world_icon_data"
-                        android:textColor="@color/black"
-                        android:textSize="30sp"
-                        android:textStyle="bold"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/world_icon_text"
-                        android:text="@string/power_message_total"
-                        android:textColor="@color/black"/>
-                </LinearLayout>
-            </LinearLayout>
-
-            <!--divider-->
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/activity_vertical_margin"/>
-
-            <!--peek power today-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/blue_border"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_bar_chart"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/barchart_icon_data"
-                        android:textColor="@color/black"
-                        android:textSize="30sp"
-                        android:textStyle="bold"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/barchart_icon_text"
-                        android:textColor="@color/black"/>
-                </LinearLayout>
-            </LinearLayout>
-
-            <!--divider-->
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/activity_vertical_margin"/>
-
-            <!--current power-->
+            <!--power produced-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -116,51 +57,17 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/bolt_icon_data"
+                        android:id="@+id/power_data"
                         android:textColor="@color/black"
                         android:textSize="30sp"
                         android:textStyle="bold"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/bolt_icon_text"
-                        android:text="@string/power_message_current"
+                        android:id="@+id/power_text"
+                        android:text="@string/power_text"
                         android:textColor="@color/black"/>
-                    </LinearLayout>
-            </LinearLayout>
-
-            <!--divider-->
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/activity_vertical_margin"/>
-
-            <!--light-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/blue_border"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_sun"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/sun_icon_data"
-                        android:textColor="@color/black"
-                        android:textSize="30sp"
-                        android:textStyle="bold"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/sun_icon_text"
-                        android:textColor="@color/black"/>
-                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
 
             <!--divider-->
@@ -185,17 +92,52 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/raindrop_icon_data"
+                        android:id="@+id/humidity_data"
                         android:textColor="@color/black"
                         android:textSize="30sp"
                         android:textStyle="bold"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/raindrop_icon_text"
-                        android:text="@string/humidity"
+                        android:id="@+id/humidity_text"
+                        android:text="@string/humidity_text"
                         android:textColor="@color/black"/>
-                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--divider-->
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/activity_vertical_margin"/>
+
+            <!--temperature-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/blue_border"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/thermometer"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/temperature_data"
+                        android:textColor="@color/black"
+                        android:textSize="30sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/temperature_text"
+                        android:text="@string/temperature_text"
+                        android:textColor="@color/black"/>
+                </LinearLayout>
             </LinearLayout>
 
             <!--divider-->
@@ -220,17 +162,51 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/updown_icon_data"
+                        android:id="@+id/barometric_data"
                         android:textColor="@color/black"
                         android:textSize="30sp"
                         android:textStyle="bold"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/updown_icon_text"
-                        android:text="@string/barometric_pressure"
+                        android:id="@+id/barometric_text"
+                        android:text="@string/barometric_text"
                         android:textColor="@color/black"/>
                 </LinearLayout>
+            </LinearLayout>
+
+            <!--divider-->
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/activity_vertical_margin"/>
+
+            <!--light-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/blue_border"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/light_bulb"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/light_data"
+                        android:textColor="@color/black"
+                        android:textSize="30sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/light_text"
+                        android:textColor="@color/black"/>
+                    </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
