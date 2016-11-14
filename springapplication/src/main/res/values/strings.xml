@@ -35,16 +35,19 @@
     <string name="barometric_pressure">"  Barometric Pressure"</string>
 
     <!--data-->
-    <string-array name="planets_array">
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
+    <string-array name="source_array">
+        <item>Power</item>
+        <item>Humidity</item>
+        <item>Temperature</item>
+        <item>Barometric</item>
+        <item>Light</item>
     </string-array>
+
+    <string-arry name="time_array">
+        <item>1 Day</item>
+        <item>7 Days</item>
+        <item>30 Days</item>
+    </string-arry>
 
 
 </resources>
