@@ -34,7 +34,7 @@ import org.json.JSONException;
 
 import java.util.List;
 import java.util.Random;
-
+//test
 public class PageFragment extends Fragment implements OnItemSelectedListener {
     //public static final String DATA_URL = " http://a77a1a4f.ngrok.io/spring/test2.php?id=";
     public static final String DATA_URL = " http://a77a1a4f.ngrok.io/spring/test2.php";

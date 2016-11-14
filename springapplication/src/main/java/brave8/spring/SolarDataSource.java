@@ -25,7 +25,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//test
 public class SolarDataSource {
 
     //public static final String DATA_URL = " http://a77a1a4f.ngrok.io/spring/test2.php?id=";
