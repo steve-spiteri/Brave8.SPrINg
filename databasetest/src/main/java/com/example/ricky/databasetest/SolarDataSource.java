@@ -50,11 +50,11 @@ public class SolarDataSource {
 
     private String jsonReturn;
 
-    public List<Solar> getList() {
+    /*public List<Solar> getList() {
         return list;
-    }
+    }*/
 
-    private List<Solar> list;
+   // private List<Solar> list;
 
 
     public SolarDataSource(Context context, EditText editTextId, Button buttonGet, TextView textViewResult) {
@@ -110,9 +110,9 @@ public class SolarDataSource {
 
             //Solar solar = jsonToSolar(collegeData);
             List<Solar> solarList = createSolarList();
-            list = new ArrayList<Solar>();
-            list = createSolarList();
-            //textViewResult.setText("Power:\t"+solarList.get(1).getPower()+"\nBar:\t" +solarList.get(1).getBarometric()+ "\nDate:\t"+ solarList.get(1).getDate());
+            //list = new ArrayList<Solar>();
+            //list = createSolarList();
+            textViewResult.setText("Power:\t"+solarList.get(1).getPower()+"\nBar:\t" +solarList.get(1).getBarometric()+ "\nDate:\t"+ solarList.get(1).getDate());
         } catch (JSONException e) {
             e.printStackTrace();
         }

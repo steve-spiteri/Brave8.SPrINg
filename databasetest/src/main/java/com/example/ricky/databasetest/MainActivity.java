@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SolarDataSource solarDataSource = new SolarDataSource(this, editTextId, buttonGet, textViewResult);
         solarDataSource.getData();
 
-        List<Solar> solarList = new ArrayList<Solar>();
-        solarList = solarDataSource.getList();
-        textViewResult.setText("Power:\t"+solarList.get(1).getPower()+"\nBar:\t" +solarList.get(1).getBarometric()+ "\nDate:\t"+ solarList.get(1).getDate());
+        //List<Solar> solarList = new ArrayList<Solar>();
+       // solarList = solarDataSource.getList();
+        //textViewResult.setText("Power:\t"+solarList.get(1).getPower()+"\nBar:\t" +solarList.get(1).getBarometric()+ "\nDate:\t"+ solarList.get(1).getDate());
     }
 }
