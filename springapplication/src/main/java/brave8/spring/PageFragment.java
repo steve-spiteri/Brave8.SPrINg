@@ -1,6 +1,8 @@
 package brave8.spring;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,18 +14,49 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import org.json.JSONException;
+
+import java.util.List;
 import java.util.Random;
 
 public class PageFragment extends Fragment {
+    //public static final String DATA_URL = " http://a77a1a4f.ngrok.io/spring/test2.php?id=";
+    public static final String DATA_URL = " http://a77a1a4f.ngrok.io/spring/test2.php";
+    public static final String DATA_URL_FETCH_BY_LOGIN = " http://c1f13104.ngrok.io/spring/fetch_data_by_login.php?id=2";
+    public static final String KEY_ID_DATA = "id_data";
+    public static final String KEY_ID_LOGIN = "id_login";
+    public static final String KEY_POWER = "power";
+    public static final String KEY_TEMPERATURE = "temperature";
+    public static final String KEY_LIGHT = "light";
+    public static final String KEY_BAROMETRIC = "bar_pressure";
+    public static final String KEY_HUMIDITY = "humidity";
+    public static final String KEY_TIME = "time";
+    public static final String KEY_DATE = "date";
+    public static final String JSON_ARRAY = "result";
+
+    Context context;
+    private EditText editTextId;
+    private Button buttonGet;
+    private TextView textViewResult;
+
+    private ProgressDialog loading;
+
+    private String jsonReturn = "";
     public static final String ARG_PAGE = "ARG_PAGE";
 
     private int mPage;
@@ -32,8 +65,16 @@ public class PageFragment extends Fragment {
     GraphView graph;
     LineGraphSeries<DataPoint> series;
     DataPoint[] values;
-    double[] power;
     double num =0.0;
+    List<Solar> solarList;
+
+    double[] power;
+    double[] temperature;
+    double[] light;
+    double[] barometric;
+    double[] humidity;
+    String[] time;
+    String[] date;
 
     public static PageFragment create(int page) {
         Bundle args = new Bundle();
@@ -53,11 +94,70 @@ public class PageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view;
+        if(mPage == 1) {
+            view = inflater.inflate(R.layout.activity_home, container, false);
+        }
+        else if(mPage == 2) {
+            view = inflater.inflate(R.layout.activity_data, container, false);
+        }
+        else {
+            view = inflater.inflate(R.layout.activity_settings, container, false);
+        }
+        setData(view);
+        return view;
+    }
 
+    public void setData(final View view) {
+
+        loading = ProgressDialog.show(getContext(),"Please wait...","Fetching...",false,false);
+
+        String url = DATA_URL_FETCH_BY_LOGIN;
+
+        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                loading.dismiss();
+                displayData(view, response);
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(),error.getMessage().toString(),Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(stringRequest);
+    }
+
+    public void displayData(View view, String response) {
+
+
+        /////////////////
+
+        power = new double[2];
+        SolarDataSource solarDataSource = new SolarDataSource(getContext());
+        try {
+            //String jsonData = solarDataSource.getData();
+            solarList = solarDataSource.createSolarList(response);
+            power = new double[solarList.size()];
+            for (int i=0;i<power.length;i++)
+            {
+                power[i] = solarList.get(i).getPower();
+                String string = Double.toString(power[i]);
+                Toast.makeText(getContext(), string, Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        /////////////////
 
         if (mPage == 1) {
             //home activity
-            view = inflater.inflate(R.layout.activity_home, container, false);
+
             TextView world_data = (TextView) view.findViewById(R.id.world_icon_data);
             //insert code to retrieve from data base
             world_data.setText("17.3" + " kWh");
@@ -83,17 +183,15 @@ public class PageFragment extends Fragment {
             updown_data.setText("101 355" + " kPa");
         }
         else if (mPage == 2) {
-            view = inflater.inflate(R.layout.activity_data, container, false);
-
 
 
             //fake data
-            Random rn = new Random();
-            power = new double[4000];
-            for (int i=0;i<power.length;i++)
+            //Random rn = new Random();
+            //power = new double[4000];
+            /*for (int i=0;i<power.length;i++)
             {
                 power[i]= 1.0 + (20.0 - 1.0) * rn.nextDouble();
-            }
+            }*/
 
             Spinner spinner1 = (Spinner) view.findViewById(R.id.spinner1);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.source_array, android.R.layout.simple_spinner_item);
@@ -127,7 +225,17 @@ public class PageFragment extends Fragment {
                 public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                     if(pos==0){
                         graph.removeAllSeries(); //clear last graph
-                        values = new DataPoint[24]; //24 hours
+
+                        ///////////
+
+                        values = new DataPoint[3];
+                        values[0] = new DataPoint(0, power[0]);
+                        values[1] = new DataPoint(1, power[1]);
+                        values[2] = new DataPoint(2, power[2]);
+
+                        ///////////
+
+                        /*values = new DataPoint[24]; //24 hours
                         for (int i =0,k=power.length-96;i<values.length;i++,k+=4) //24 entries, k=end of the array - 24*4
                         {
                             for(int x=0;x<4;x++) //combine four 15 min entries for 1 hour
@@ -136,7 +244,7 @@ public class PageFragment extends Fragment {
                             }
                             values[i] = new DataPoint(i,num/4); //average of the four numbers
                             num=0.0; //reset num so it can be used again
-                        }
+                        }*/
                         series = new LineGraphSeries<>(values); //add values to series
                         graph.addSeries(series); //add series to graph
                         graph.getViewport().setXAxisBoundsManual(true);
@@ -194,12 +302,7 @@ public class PageFragment extends Fragment {
             });
         }
         else {
-            view = inflater.inflate(R.layout.activity_settings, container, false);
+
         }
-
-
-        return view;
     }
-
-
 }
