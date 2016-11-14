@@ -3,13 +3,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/text_about_application"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_application"/>
+
+        <View
+            android:id="@+id/divider_about_application"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/text_about_application"
+            android:background="@color/black" />
+
+        <TextView
+            android:id="@+id/text_application_theme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider_about_application"
+            android:text="@string/application_theme"/>
+
+        <Switch
+            android:id="@+id/controls_application_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_application_theme"/>
+
+        <TextView
+            android:id="@+id/text_theme_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_application_theme"
+            android:text="@string/light_theme"
+            android:layout_toRightOf="@id/controls_application_theme"/>
 
 
 
-    </LinearLayout>
+
+    </RelativeLayout>
 </ScrollView>

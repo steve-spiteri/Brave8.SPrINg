@@ -176,6 +176,8 @@ public class PageFragment extends Fragment {
         }
         else {
             view = inflater.inflate(R.layout.activity_settings, container, false);
+
+
         }
 
 
