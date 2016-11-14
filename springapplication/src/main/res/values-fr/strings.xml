@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">SpringApplication</string>
+
+    <!--dialog-->
+    <string name="back_pressed_title">Demande de clôture</string>
+    <string name="back_pressed_message">Voulez-vous vraiment fermer cette application?</string>
+    <string name="back_pressed_positive">Oui</string>
+    <string name="back_pressed_negative">Non</string>
+
+    <!--login-->
+    <string name="login">S\'identifier</string>
+    <string name="username">Nom d\'utilisateur</string>
+    <string name="password">Mot de passe</string>
+    <string name="sign_in">Se connecter</string>
+    <string name="user_error">Nom d\'utilisateur non reconnu.</string>
+    <string name="user_empty_error">Nom d\'utilisateur (requis.</string>
+    <string name="pass_error">Mot de passe non reconnu.</string>
+    <string name="pass_empty_error">Mot de passe requis.</string>
+
+    <!--home-->
+    <string name="home">Accueil</string>
+    <string name="data">Données</string>
+    <string name="settings">Paramètres</string>
+
+    <string name="power_message_total">Total de l\'énergie produite aujourd\'hui</string>
+    <string name="power_message_peak">Puissance maximale à %1$s aujourd\'hui</string>
+    <string name="power_message_current">Puissance actuelle</string>
+    <string name="lux_message_sunny">Ensoleillé</string>
+    <string name="lux_message_overcast">Couvert</string>
+    <string name="lux_message_night">Nuit</string>
+    <string name="humidity">Humidité</string>
+    <string name="barometric_pressure">Pression barométrique</string>
+
+    <!--data-->
+    <string-array name="source_array">
+        <item>Puissance</item>
+        <item>Humidité</item>
+        <item>Température</item>
+        <item>Barométrique</item>
+        <item>Lumière</item>
+    </string-array>
+
+    <string-array name="time_array">
+        <item>1 Journée</item>
+        <item>7 Journées</item>
+        <item>30 Journées</item>
+    </string-array>
+
+    <!-- settings -->
+    <string name="about_application">À propos de l\'application</string>
+    <string name="app_information">\nSPrINg Application v1.0\nConstruit sur November. 14, 2016\n\nApplication Auteurs:\n\tSteven Spiteri\n\tRichard Burak\n\tSalvatore Angilletta</string>
+    <string name="application_theme">Thème d\'application</string>
+    <string name="light_theme">Thème Lumière</string>
+    <string name="dark_theme">Thème Noir</string>
+    <string name="change_temperature_measurement">Changer la mesure de la température</string>
+    <string name="celsius">Celsius</string>
+    <string name="fahrenheit">Fahrenheit</string>
+
+
+</resources>
