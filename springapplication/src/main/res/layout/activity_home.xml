@@ -13,12 +13,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!--date-->
         <TextView
             android:layout_marginTop="25dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/date_text"
-            android:text="@string/temp_date"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -90,7 +90,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/barchart_icon_text"
-                        android:text="@string/power_message_peak"
                         android:textColor="@color/black"/>
                 </LinearLayout>
             </LinearLayout>
@@ -160,7 +159,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/sun_icon_text"
-                        android:text="@string/lux_message_sunny"
                         android:textColor="@color/black"/>
                     </LinearLayout>
             </LinearLayout>
