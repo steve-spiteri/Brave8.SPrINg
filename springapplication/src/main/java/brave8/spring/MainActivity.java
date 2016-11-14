@@ -27,7 +27,9 @@ public class MainActivity extends AppCompatActivity {
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
-
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_home_icon_silhouette);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_cube);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_gear_option);
     }
 
 
