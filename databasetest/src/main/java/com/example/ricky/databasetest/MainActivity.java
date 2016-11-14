@@ -19,15 +19,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText editTextId;
     private Button buttonGet;
     private TextView textViewResult;
-
-    private ProgressDialog loading;
-
-    private String JSONReturn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,54 +40,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonGet.setOnClickListener(this);
     }
 
-    private void getData() {
-        String id = editTextId.getText().toString().trim();
-        if (id.equals("")) {
-            Toast.makeText(this, "Please enter an id", Toast.LENGTH_LONG).show();
-            return;
-        }
-        loading = ProgressDialog.show(this,"Please wait...","Fetching...",false,false);
 
-        String url = Config.DATA_URL_FETCH_BY_LOGIN+editTextId.getText().toString().trim();
-        //String url = Config.DATA_URL;
-
-        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                JSONReturn = response;
-                loading.dismiss();
-                showJSON(JSONReturn);
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MainActivity.this,error.getMessage().toString(),Toast.LENGTH_LONG).show();
-                    }
-                });
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
-
-    private void showJSON(String response){
-        String name="";
-        String address="";
-        String vc = "";
-        try {
-            JSONObject jsonObject = new JSONObject(response);
-            JSONArray result = jsonObject.getJSONArray(Config.JSON_ARRAY);
-            JSONObject collegeData = result.getJSONObject(0);
-            name = collegeData.getString(Config.KEY_ID_DATA);
-            address = collegeData.getString(Config.KEY_POWER);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        textViewResult.setText("Name:\t"+name+"\nAddress:\t" +address+ "\nVice Chancellor:\t"+ vc);
-    }
 
     @Override
     public void onClick(View v) {
-        getData();
+        SolarDataSource solarDataSource = new SolarDataSource(this, editTextId, buttonGet, textViewResult);
+        solarDataSource.getData();
+
+        List<Solar> solarList = new ArrayList<Solar>();
+        solarList = solarDataSource.getList();
+        textViewResult.setText("Power:\t"+solarList.get(1).getPower()+"\nBar:\t" +solarList.get(1).getBarometric()+ "\nDate:\t"+ solarList.get(1).getDate());
     }
 }
