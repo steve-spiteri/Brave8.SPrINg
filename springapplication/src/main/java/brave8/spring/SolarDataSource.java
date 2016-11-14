@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.telecom.Call;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -29,7 +30,7 @@ public class SolarDataSource {
 
     //public static final String DATA_URL = " http://a77a1a4f.ngrok.io/spring/test2.php?id=";
     public static final String DATA_URL = " http://a77a1a4f.ngrok.io/spring/test2.php";
-    public static final String DATA_URL_FETCH_BY_LOGIN = " http://c1f13104.ngrok.io/spring/fetch_data_by_login.php?id=";
+    public static final String DATA_URL_FETCH_BY_LOGIN = " http://c1f13104.ngrok.io/spring/fetch_data_by_login.php?id=2";
     public static final String KEY_ID_DATA = "id_data";
     public static final String KEY_ID_LOGIN = "id_login";
     public static final String KEY_POWER = "power";
@@ -48,7 +49,7 @@ public class SolarDataSource {
 
     private ProgressDialog loading;
 
-    private String jsonReturn;
+    private String jsonReturn = "";
 
     /*public List<Solar> getList() {
         return list;
@@ -57,34 +58,52 @@ public class SolarDataSource {
     // private List<Solar> list;
 
 
-    public SolarDataSource(Context context, EditText editTextId, Button buttonGet, TextView textViewResult) {
+    public SolarDataSource(Context context) {
         this.context = context;
-        this.editTextId = editTextId;
+        /*VolleyResponseListener listener = new VolleyResponseListener() {
+            @Override
+            public void onError(String message) {
+
+            }
+
+            @Override
+            public void onResponse(String response) {
+                jsonReturn = response;
+            }
+        };
+        setData(listener);*/
+        /*this.editTextId = editTextId;
         this.buttonGet = buttonGet;
-        this.textViewResult = textViewResult;
+        this.textViewResult = textViewResult;*/
     }
 
-    public void getData() {
-        String id = editTextId.getText().toString().trim();
+    /*
+    public String getData() {
+        return jsonReturn;
+    }
+
+    public void setData(final VolleyResponseListener listener) {
+        /*String id = editTextId.getText().toString().trim();
         if (id.equals("")) {
             Toast.makeText(context, "Please enter an id", Toast.LENGTH_LONG).show();
             return;
         }
         loading = ProgressDialog.show(context,"Please wait...","Fetching...",false,false);
 
-        String url = DATA_URL_FETCH_BY_LOGIN+editTextId.getText().toString().trim();
+        String url = DATA_URL_FETCH_BY_LOGIN;
 
         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                jsonReturn = response;
                 loading.dismiss();
-                showJSON();
+                listener.onResponse(response);
+                //showJSON();
             }
         },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        listener.onError(error.toString());
                         Toast.makeText(context,error.getMessage().toString(),Toast.LENGTH_LONG).show();
                     }
                 });
@@ -109,19 +128,19 @@ public class SolarDataSource {
             //address = collegeData.getString(Config.KEY_POWER);
 
             //Solar solar = jsonToSolar(collegeData);
-            List<Solar> solarList = createSolarList();
+           // List<Solar> solarList = createSolarList();
             //list = new ArrayList<Solar>();
             //list = createSolarList();
-            textViewResult.setText("Power:\t"+solarList.get(1).getPower()+"\nBar:\t" +solarList.get(1).getBarometric()+ "\nDate:\t"+ solarList.get(1).getDate());
+            //textViewResult.setText("Power:\t"+solarList.get(1).getPower()+"\nBar:\t" +solarList.get(1).getBarometric()+ "\nDate:\t"+ solarList.get(1).getDate());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    public List<Solar> createSolarList() throws JSONException {
+    public List<Solar> createSolarList(String jsonData) throws JSONException {
         List<Solar> solarList = new ArrayList<Solar>();
 
-        JSONObject jsonObject = new JSONObject(jsonReturn);
+        JSONObject jsonObject = new JSONObject(jsonData);
         JSONArray result = jsonObject.getJSONArray(JSON_ARRAY);
         for(int i = 0; i < result.length(); i++) {
             solarList.add(jsonToSolar(result.getJSONObject(i)));
@@ -141,4 +160,11 @@ public class SolarDataSource {
         solar.setDate(jsonObject.getString(KEY_DATE));
         return solar;
     }
+
+    /*
+    public interface VolleyResponseListener {
+        void onError(String message);
+
+        void onResponse(String response);
+    }*/
 }
