@@ -14,7 +14,8 @@ public class Solar {
     double light;
     double barometric;
     double humidity;
-    Date date;
+    String time;
+    String date;
 
     public int getIdData() {
         return idData;
@@ -72,11 +73,21 @@ public class Solar {
         this.humidity = humidity;
     }
 
-    public Date getDate() {
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
+
+
 }

@@ -1,177 +1,144 @@
 package brave8.spring;
 
+import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Ricky on 2016-11-11.
- */
+public class SolarDataSource {
 
-public class SolarDataSource extends AsyncTask<String, Void, String>{
+    //public static final String DATA_URL = " http://a77a1a4f.ngrok.io/spring/test2.php?id=";
+    public static final String DATA_URL = " http://a77a1a4f.ngrok.io/spring/test2.php";
+    public static final String DATA_URL_FETCH_BY_LOGIN = " http://a77a1a4f.ngrok.io/spring/fetch_data_by_login.php?id=";
+    public static final String KEY_ID_DATA = "id_data";
+    public static final String KEY_ID_LOGIN = "id_login";
+    public static final String KEY_POWER = "power";
+    public static final String KEY_TEMPERATURE = "temperature";
+    public static final String KEY_LIGHT = "light";
+    public static final String KEY_BAROMETRIC = "bar_pressure";
+    public static final String KEY_HUMIDITY = "humidity";
+    public static final String KEY_TIME = "time";
+    public static final String KEY_DATE = "date";
+    public static final String JSON_ARRAY = "result";
 
-    private Context context;
+    Context context;
+    private EditText editTextId;
+    private Button buttonGet;
+    private TextView textViewResult;
 
-    public SolarDataSource(Context context) {
+    private ProgressDialog loading;
+
+    private String jsonReturn;
+
+    /*public List<Solar> getList() {
+        return list;
+    }*/
+
+    // private List<Solar> list;
+
+
+    public SolarDataSource(Context context, EditText editTextId, Button buttonGet, TextView textViewResult) {
         this.context = context;
+        this.editTextId = editTextId;
+        this.buttonGet = buttonGet;
+        this.textViewResult = textViewResult;
     }
 
-    protected void onPreExecute() {
+    public void getData() {
+        String id = editTextId.getText().toString().trim();
+        if (id.equals("")) {
+            Toast.makeText(context, "Please enter an id", Toast.LENGTH_LONG).show();
+            return;
+        }
+        loading = ProgressDialog.show(context,"Please wait...","Fetching...",false,false);
 
+        String url = DATA_URL_FETCH_BY_LOGIN+editTextId.getText().toString().trim();
+
+        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                jsonReturn = response;
+                loading.dismiss();
+                showJSON();
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context,error.getMessage().toString(),Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
     }
 
-    @Override
-    protected String doInBackground(String... arg0) {
-       /* String fullName = arg0[0];
-        String userName = arg0[1];
-        String passWord = arg0[2];
-        String phoneNumber = arg0[3];
-        String emailAddress = arg0[4];*/
-
-        String id_login = "1";
-        String power = "7.0";
-        String temperature = "22";
-        String light = "19000";
-        String bar_pressure = "55";
-        String humidity = "50.3";
-        String date = "25/09/2014 6:28:21";
-
-
-        String link;
-        String data;
-        BufferedReader bufferedReader;
-        String result;
-
+    public void showJSON(){
+        String name="";
+        String address="";
+        String vc = "";
         try {
-            data = "?id_login=" + URLEncoder.encode(id_login, "UTF-8");
-            data += "&power=" + URLEncoder.encode(power, "UTF-8");
-            data += "&temperature=" + URLEncoder.encode(temperature, "UTF-8");
-            data += "&light=" + URLEncoder.encode(light, "UTF-8");
-            data += "&bar_pressure=" + URLEncoder.encode(bar_pressure, "UTF-8");
-            data += "&humidity=" + URLEncoder.encode(humidity, "UTF-8");
-            data += "&date=" + URLEncoder.encode(date, "UTF-8");
+            // Solar solar = new Solar();
 
-            link = "http://691840d3.ngrok.io/spring/insert_test2.php" + data;
-            URL url = new URL(link);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            //JSONObject jsonObject = new JSONObject(response);
+            JSONObject jsonObject = new JSONObject(jsonReturn);
+            JSONArray result = jsonObject.getJSONArray(JSON_ARRAY);
+            JSONObject collegeData = result.getJSONObject(1);
 
-            bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            result = bufferedReader.readLine();
-            return result;
-        } catch (Exception e) {
-            return new String("Exception: " + e.getMessage());
+            // name = collegeData.getString(Config.KEY_ID_LOGIN);
+            //address = collegeData.getString(Config.KEY_POWER);
+
+            //Solar solar = jsonToSolar(collegeData);
+            List<Solar> solarList = createSolarList();
+            //list = new ArrayList<Solar>();
+            //list = createSolarList();
+            textViewResult.setText("Power:\t"+solarList.get(1).getPower()+"\nBar:\t" +solarList.get(1).getBarometric()+ "\nDate:\t"+ solarList.get(1).getDate());
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
-    @Override
-    protected void onPostExecute(String result) {
-        if (result != null) {
-            try {
+    public List<Solar> createSolarList() throws JSONException {
+        List<Solar> solarList = new ArrayList<Solar>();
 
-                JSONObject jsonObj = new JSONObject();
-                String query_result = jsonObj.getString("query_result");
-                if (query_result.equals("SUCCESS")) {
-                    Toast.makeText(context, "Data inserted successfully. Signup successfull.", Toast.LENGTH_SHORT).show();
-                } else if (query_result.equals("FAILURE")) {
-                    Toast.makeText(context, "Data could not be inserted. Signup failed.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(context, "Couldn't connect to remote database.", Toast.LENGTH_SHORT).show();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast.makeText(context, "Error parsing JSON data.", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(context, "Couldn't get any JSON data.", Toast.LENGTH_SHORT).show();
+        JSONObject jsonObject = new JSONObject(jsonReturn);
+        JSONArray result = jsonObject.getJSONArray(JSON_ARRAY);
+        for(int i = 0; i < result.length(); i++) {
+            solarList.add(jsonToSolar(result.getJSONObject(i)));
         }
+        return solarList;
     }
 
-
-    /*String str;
-
-    public SolarDataSource() throws IOException, ClassNotFoundException, SQLException {
-       URL url = new URL("http://localhost/spring/test.php");
-
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setReadTimeout(10000);
-        conn.setConnectTimeout(15000);
-        conn.setRequestMethod("POST");
-        conn.setDoInput(true);
-        conn.setDoOutput(true);
-
-        InputStream readDB = conn.getInputStream();
-        InputStreamReader readDBReadewr = new InputStreamReader(readDB);
-         str = "Hey there";
-        insertToDatabase("test", "test");
-
+    private Solar jsonToSolar(JSONObject jsonObject) throws JSONException {
+        Solar solar = new Solar();
+        solar.setIdLogin(jsonObject.getInt(KEY_ID_LOGIN));
+        solar.setPower(jsonObject.getDouble(KEY_POWER));
+        solar.setTemperature(jsonObject.getDouble(KEY_TEMPERATURE));
+        solar.setLight(jsonObject.getDouble(KEY_LIGHT));
+        solar.setBarometric(jsonObject.getDouble(KEY_BAROMETRIC));
+        solar.setHumidity(jsonObject.getDouble(KEY_HUMIDITY));
+        solar.setTime(jsonObject.getString(KEY_TIME));
+        solar.setDate(jsonObject.getString(KEY_DATE));
+        return solar;
     }
-    public String getStr()
-    {
-        return str;
-    }
-
-    private void insertToDatabase(String name, String add) {
-        class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
-            @Override
-            protected String doInBackground(String... params) {
-
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-                nameValuePairs.add(new BasicNameValuePair("id_login", "1"));
-                nameValuePairs.add(new BasicNameValuePair("power", "8.0"));
-                nameValuePairs.add(new BasicNameValuePair("temperature", "22"));
-                nameValuePairs.add(new BasicNameValuePair("light", "19800"));
-                nameValuePairs.add(new BasicNameValuePair("bar_pressure", "102.3"));
-                nameValuePairs.add(new BasicNameValuePair("humidity", "77"));
-                nameValuePairs.add(new BasicNameValuePair("date", "25/09/2014 6:28:21"));
-
-                try {
-                    HttpClient httpClient = new DefaultHttpClient();
-                    HttpPost httpPost = new HttpPost(
-                            "http://localhost/spring/insert_test.php");
-                    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-                    HttpResponse response = httpClient.execute(httpPost);
-
-                    HttpEntity entity = response.getEntity();
-
-
-                } catch (ClientProtocolException e) {
-
-                } catch (IOException e) {
-
-                }
-
-                return "success";
-            }
-
-            @Override
-            protected void onPostExecute(String result){
-                if(result.equalsIgnoreCase("Exception Caught")){
-
-                }else{
-
-                }
-            }
-        }
-        SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
-        sendPostReqAsyncTask.execute(name, add);
-    }
-*/
-
 }
