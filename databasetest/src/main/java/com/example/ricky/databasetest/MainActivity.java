@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ProgressDialog loading;
 
+    private String JSONReturn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,13 +49,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         loading = ProgressDialog.show(this,"Please wait...","Fetching...",false,false);
 
-        String url = Config.DATA_URL+editTextId.getText().toString().trim();
+        String url = Config.DATA_URL_FETCH_BY_LOGIN+editTextId.getText().toString().trim();
+        //String url = Config.DATA_URL;
 
         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                JSONReturn = response;
                 loading.dismiss();
-                showJSON(response);
+                showJSON(JSONReturn);
             }
         },
                 new Response.ErrorListener() {
