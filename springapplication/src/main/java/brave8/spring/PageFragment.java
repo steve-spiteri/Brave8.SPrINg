@@ -140,12 +140,28 @@ public class PageFragment extends Fragment {
         SolarDataSource solarDataSource = new SolarDataSource(getContext());
         try {
             //String jsonData = solarDataSource.getData();
+
+            //Initialize array sizes
             solarList = solarDataSource.createSolarList(response);
             power = new double[solarList.size()];
-            for (int i=0;i<power.length;i++)
+            temperature = new double[solarList.size()];
+            light = new double[solarList.size()];
+            barometric = new double[solarList.size()];
+            humidity = new double[solarList.size()];
+            time = new String[solarList.size()];
+            date = new String[solarList.size()];
+
+            for (int i = 0; i < solarList.size(); i++)
             {
                 power[i] = solarList.get(i).getPower();
-                String string = Double.toString(power[i]);
+                temperature[i] = solarList.get(i).getTemperature();
+                light[i] = solarList.get(i).getLight();
+                barometric[i] = solarList.get(i).getBarometric();
+                humidity[i] = solarList.get(i).getHumidity();
+                time[i] = solarList.get(i).getTime();
+                date[i] = solarList.get(i).getDate();
+
+                String string = Double.toString(barometric[i]);
                 Toast.makeText(getContext(), string, Toast.LENGTH_SHORT).show();
             }
 
