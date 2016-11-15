@@ -9,8 +9,16 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="bold">
+    <!-- home activity -->
+    <style name="top_text">
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
     </style>
+
+    <style name="data_text">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
 
 </resources>

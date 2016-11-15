@@ -17,9 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/date_text"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            style="@style/top_text"
             android:gravity="center_horizontal"/>
 
         <!--time-->
@@ -27,16 +25,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/time_text"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center_horizontal"/>
+            style="@style/top_text"
+            android:gravity="center_horizontal"
+            android:layout_below="@id/date_text"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/date_text">
+            android:layout_below="@id/time_text">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,15 +59,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/power_data"
-                        android:textColor="@color/black"
-                        android:textSize="30sp"
-                        android:textStyle="bold"/>
+                        style="@style/data_text"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/power_text"
                         android:text="@string/power_text"
-                        android:textColor="@color/black"/>
+                        style="@style/measurement_text"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -97,15 +92,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/humidity_data"
-                        android:textColor="@color/black"
-                        android:textSize="30sp"
-                        android:textStyle="bold"/>
+                        style="@style/data_text"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/humidity_text"
                         android:text="@string/humidity_text"
-                        android:textColor="@color/black"/>
+                        style="@style/measurement_text"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -132,15 +125,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/temperature_data"
-                        android:textColor="@color/black"
-                        android:textSize="30sp"
-                        android:textStyle="bold"/>
+                        style="@style/data_text"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/temperature_text"
                         android:text="@string/temperature_text"
-                        android:textColor="@color/black"/>
+                        style="@style/measurement_text"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -174,15 +165,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/barometric_data"
-                        android:textColor="@color/black"
-                        android:textSize="30sp"
-                        android:textStyle="bold"/>
+                        style="@style/data_text"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/barometric_text"
                         android:text="@string/barometric_text"
-                        android:textColor="@color/black"/>
+                        style="@style/measurement_text"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -209,14 +198,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/light_data"
-                        android:textColor="@color/black"
-                        android:textSize="30sp"
-                        android:textStyle="bold"/>
+                        style="@style/data_text"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/light_text"
-                        android:textColor="@color/black"/>
+                        style="@style/measurement_text"/>
                     </LinearLayout>
             </LinearLayout>
         </LinearLayout>
