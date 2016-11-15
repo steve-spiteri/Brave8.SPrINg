@@ -13,8 +13,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -238,6 +240,34 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             spinner1.setOnItemSelectedListener(this);
             spinner2.setOnItemSelectedListener(this);
             //spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        }
+        else{
+            Switch theme_switch = (Switch)view.findViewById(R.id.controls_application_theme);
+            final TextView theme_text = (TextView)view.findViewById(R.id.text_theme_name);
+            theme_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        //ThemeUtils.changeToTheme(getActivity(), ThemeUtils.DARK);
+                        theme_text.setText(R.string.dark_theme);
+                    } else {
+                        //ThemeUtils.changeToTheme(getActivity(), ThemeUtils.LIGHT);
+                        theme_text.setText(R.string.light_theme);
+                    }
+                }
+            });
+
+            Switch temperature_switch = (Switch)view.findViewById(R.id.controls_change_temperature);
+            final TextView temperature_text = (TextView)view.findViewById(R.id.text_temperature);
+            temperature_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        temperature_text.setText(R.string.fahrenheit);
+
+                    } else {
+                        temperature_text.setText(R.string.celsius);
+                    }
+                }
+            });
         }
     }
     @Override
