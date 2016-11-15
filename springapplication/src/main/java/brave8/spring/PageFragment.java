@@ -1,6 +1,7 @@
 package brave8.spring;
 
 import android.Manifest;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -62,6 +63,7 @@ public class PageFragment extends Fragment {
         if (mPage == 1) {
             //home activity
             view = inflater.inflate(R.layout.activity_home, container, false);
+
             TextView world_data = (TextView) view.findViewById(R.id.world_icon_data);
             //insert code to retrieve from data base
             world_data.setText("17.3" + " kWh");
