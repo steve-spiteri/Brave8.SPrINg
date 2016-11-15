@@ -38,6 +38,17 @@
     <string name="light_date">%1$s</string>
 
     <!--data-->
+    <string name="voltage">Power (kWh)</string>
+    <string name="humidity">Humidity (%)</string>
+    <string name="temperature_c">Degrees (C)</string>
+    <string name="temperature_f">Degrees (F)</string>
+    <string name="barometric">Barometric (kPa)</string>
+    <string name="light">Lux</string>
+
+    <string name="hour">Hour</string>
+    <string name="day">Day</string>
+    <string name="week">Week</string>
+
     <string-array name="source_array">
         <item>Power</item>
         <item>Humidity</item>

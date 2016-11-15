@@ -60,6 +60,13 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     String[] time;
     String[] date;
 
+    //fake data variables
+    double[] fakepower;
+    double[] faketemp;
+    double[] fakelight;
+    double[] fakebarometric;
+    double[] fakehumidity;
+
     public static PageFragment create(int page) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
@@ -136,9 +143,6 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                 humidity[i] = solarList.get(i).getHumidity();
                 time[i] = solarList.get(i).getTime();
                 date[i] = solarList.get(i).getDate();
-
-                String string = Double.toString(barometric[i]);
-                Toast.makeText(getContext(), string, Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
@@ -176,12 +180,33 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
 
 
             //fake data
-            //Random rn = new Random();
-            //power = new double[4000];
-            /*for (int i=0;i<power.length;i++)
+            Random rn = new Random();
+            fakepower = new double[4000];
+            for (int i=0;i<fakepower.length;i++)
             {
-                power[i]= 1.0 + (20.0 - 1.0) * rn.nextDouble();
-            }*/
+                fakepower[i]= 1.0 + (20.0 - 1.0) * rn.nextDouble();
+            }
+            faketemp = new double[4000];
+            for (int i=0;i<faketemp.length;i++)
+            {
+                faketemp[i]= 1.0 + (20.0 - 1.0) * rn.nextDouble();
+            }
+            fakelight = new double[4000];
+            for (int i=0;i<fakelight.length;i++)
+            {
+                fakelight[i]= 0.0 + (100000.0 - 0.0) * rn.nextDouble();
+            }
+            fakebarometric = new double[4000];
+            for (int i=0;i<fakebarometric.length;i++)
+            {
+                fakebarometric[i]= 90.0 + (105.0 - 90.0) * rn.nextDouble();
+            }
+            fakehumidity = new double[4000];
+            for (int i=0;i<fakehumidity.length;i++)
+            {
+                fakehumidity[i]= 30.0 + (70.0 - 30.0) * rn.nextDouble();
+            }
+
 
             spinner1 = (Spinner) view.findViewById(R.id.spinner1);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.source_array, android.R.layout.simple_spinner_item);
@@ -217,7 +242,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        if(spinner1.getSelectedItemPosition()==0){
+        if(spinner1.getSelectedItemPosition()==0){ //equals power
             graph.removeAllSeries(); //clear last graph
 
             ///////////
@@ -229,37 +254,17 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
 
             ///////////
             if(spinner2.getSelectedItemPosition() == 0) {
+                //real data
+                graph.removeAllSeries(); //clear last graph
                 series = new LineGraphSeries<>(values); //add values to series
                 graph.addSeries(series); //add series to graph
                 graph.getViewport().setXAxisBoundsManual(true);
                 graph.getViewport().setMaxX(24); //so you can see last label
-                gridLabelRenderer.setVerticalAxisTitle("Voltage"); //set vertical axis title
-                gridLabelRenderer.setHorizontalAxisTitle("Hour"); //set horizontal axis title
+                gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.voltage)); //set vertical axis title
+                gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.hour)); //set horizontal axis title
                 gridLabelRenderer.setNumHorizontalLabels(12); //set number of horizontal labels
                 graph.getGridLabelRenderer().reloadStyles(); //reload style
-            }
-            else if(spinner2.getSelectedItemPosition()  == 1) {
-                series = new LineGraphSeries<>(values); //add values to series
-                graph.addSeries(series); //add series to graph
-                graph.getViewport().setXAxisBoundsManual(true);
-                graph.getViewport().setMaxX(7); //so you can see last label
-                gridLabelRenderer.setVerticalAxisTitle("Voltage"); //set vertical axis title
-                gridLabelRenderer.setHorizontalAxisTitle("Day"); //set horizontal axis title
-                gridLabelRenderer.setNumHorizontalLabels(7); //set number of horizontal labels
-                graph.getGridLabelRenderer().reloadStyles(); //reload style
-            }
-            else if(spinner2.getSelectedItemPosition()  == 2) {
-                series = new LineGraphSeries<>(values); //add values to series
-                graph.addSeries(series); //add series to graph
-                graph.getViewport().setXAxisBoundsManual(true);
-                graph.getViewport().setMaxX(30); //so you can see last label
-                gridLabelRenderer.setVerticalAxisTitle("Voltage"); //set vertical axis title
-                gridLabelRenderer.setHorizontalAxisTitle("Day"); //set horizontal axis title
-                gridLabelRenderer.setNumHorizontalLabels(10); //set number of horizontal labels
-                graph.getGridLabelRenderer().reloadStyles(); //reload style
-            }
-
-                        /*values = new DataPoint[24]; //24 hours
+                /*values = new DataPoint[24]; //24 hours
                         for (int i =0,k=power.length-96;i<values.length;i++,k+=4) //24 entries, k=end of the array - 24*4
                         {
                             for(int x=0;x<4;x++) //combine four 15 min entries for 1 hour
@@ -269,31 +274,66 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                             values[i] = new DataPoint(i,num/4); //average of the four numbers
                             num=0.0; //reset num so it can be used again
                         }*/
-
+            }
+            else if(spinner2.getSelectedItemPosition()  == 1) {
+                //fake data
+                values = new DataPoint[7]; //7 days
+                for (int i =0,k=fakepower.length-672;i<values.length;i++,k+=96) //7 entries, k=end of array - (24*4)*7
+                {
+                    for(int x=0;x<96;x++) //combine 96 15 min entries for 1 day
+                    {
+                        num+=fakepower[k+x]; //add 96 entries into one variable
+                    }
+                    values[i] = new DataPoint(i,num/96); //average the 96 numbers
+                    num=0.0; //reset num so it can be used again
+                }
+                series = new LineGraphSeries<>(values);
+                graph.addSeries(series);
+                graph.getViewport().setXAxisBoundsManual(true);
+                graph.getViewport().setMaxX(7); //so you can see last label
+                gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.voltage)); //set vertical axis title
+                gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.day)); //set horizontal axis title
+                gridLabelRenderer.setNumHorizontalLabels(7);
+                graph.getGridLabelRenderer().reloadStyles();
+            }
+            else if(spinner2.getSelectedItemPosition()  == 2) {
+                //fake data
+                values = new DataPoint[4]; //4 weeks
+                for (int i =0,k=fakepower.length-2688;i<values.length;i++,k+=672) //4 entries, k=end of array = ((24*4)*7)*4
+                {
+                    for(int x=0;x<672;x++) //combine 672 15 min entries int one vatiable
+                    {
+                        num+=fakepower[k+x]; //add 672 entries into one variable
+                    }
+                    values[i] = new DataPoint(i,num/672); //average the 672 numbers
+                    num=0.0; //reset num so it can be used again
+                }
+                series = new LineGraphSeries<>(values);
+                graph.addSeries(series);
+                graph.getViewport().setXAxisBoundsManual(true);
+                graph.getViewport().setMaxX(4); //so you can see last label
+                gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.voltage)); //set vertical axis title
+                gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.week)); //set horizontal axis title
+                gridLabelRenderer.setNumHorizontalLabels(4);
+                graph.getGridLabelRenderer().reloadStyles();
+            }
         }
+        //humidity
         else if(spinner1.getSelectedItemPosition()==1){
             graph.removeAllSeries(); //clear last graph
 
-            ///////////
-
-            values = new DataPoint[3];
-            values[0] = new DataPoint(0, humidity[0]);
-            values[1] = new DataPoint(1, humidity[1]);
-            values[2] = new DataPoint(2, humidity[2]);
-
-            ///////////
-
-                        /*values = new DataPoint[24]; //24 hours
-                        for (int i =0,k=power.length-96;i<values.length;i++,k+=4) //24 entries, k=end of the array - 24*4
-                        {
-                            for(int x=0;x<4;x++) //combine four 15 min entries for 1 hour
-                            {
-                                num+=power[k+x]; //add four entries into one variable
-                            }
-                            values[i] = new DataPoint(i,num/4); //average of the four numbers
-                            num=0.0; //reset num so it can be used again
-                        }*/
             if(spinner2.getSelectedItemPosition() == 0) {
+                //REAL DATA
+                /*values = new DataPoint[24]; //24 hours
+                for (int i =0,k=fakehumidity.length-96;i<values.length;i++,k+=4) //24 entries, k=end of the array - 24*4
+                {
+                    for(int x=0;x<4;x++) //combine four 15 min entries for 1 hour
+                    {
+                        num+=fakehumidity[k+x]; //add four entries into one variable
+                    }
+                    values[i] = new DataPoint(i,num/4); //average of the four numbers
+                    num=0.0; //reset num so it can be used again
+                }
                 series = new LineGraphSeries<>(values); //add values to series
                 graph.addSeries(series); //add series to graph
                 graph.getViewport().setXAxisBoundsManual(true);
@@ -301,119 +341,114 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                 gridLabelRenderer.setVerticalAxisTitle("Humidity"); //set vertical axis title
                 gridLabelRenderer.setHorizontalAxisTitle("Hour"); //set horizontal axis title
                 gridLabelRenderer.setNumHorizontalLabels(12); //set number of horizontal labels
-                graph.getGridLabelRenderer().reloadStyles(); //reload style
+                graph.getGridLabelRenderer().reloadStyles(); //reload style*/
             }
             else if(spinner2.getSelectedItemPosition()  == 1) {
-                series = new LineGraphSeries<>(values); //add values to series
-                graph.addSeries(series); //add series to graph
+                values = new DataPoint[7]; //7 days
+                for (int i =0,k=fakehumidity.length-672;i<values.length;i++,k+=96) //7 entries, k=end of array - (24*4)*7
+                {
+                    for(int x=0;x<96;x++) //combine 96 15 min entries for 1 day
+                    {
+                        num+=fakehumidity[k+x]; //add 96 entries into one variable
+                    }
+                    values[i] = new DataPoint(i,num/96); //average the 96 numbers
+                    num=0.0; //reset num so it can be used again
+                }
+                series = new LineGraphSeries<>(values);
+                graph.addSeries(series);
                 graph.getViewport().setXAxisBoundsManual(true);
                 graph.getViewport().setMaxX(7); //so you can see last label
-                gridLabelRenderer.setVerticalAxisTitle("Humidity"); //set vertical axis title
-                gridLabelRenderer.setHorizontalAxisTitle("Day"); //set horizontal axis title
-                gridLabelRenderer.setNumHorizontalLabels(7); //set number of horizontal labels
-                graph.getGridLabelRenderer().reloadStyles(); //reload style
+                gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.humidity)); //set vertical axis title
+                gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.day)); //set horizontal axis title;
+                gridLabelRenderer.setNumHorizontalLabels(7);
+                graph.getGridLabelRenderer().reloadStyles();
             }
             else if(spinner2.getSelectedItemPosition()  == 2) {
-                series = new LineGraphSeries<>(values); //add values to series
-                graph.addSeries(series); //add series to graph
+                values = new DataPoint[4]; //4 weeks
+                for (int i =0,k=fakehumidity.length-2688;i<values.length;i++,k+=672) //4 entries, k=end of array = ((24*4)*7)*4
+                {
+                    for(int x=0;x<672;x++) //combine 672 15 min entries int one vatiable
+                    {
+                        num+=fakehumidity[k+x]; //add 672 entries into one variable
+                    }
+                    values[i] = new DataPoint(i,num/672); //average the 672 numbers
+                    num=0.0; //reset num so it can be used again
+                }
+                series = new LineGraphSeries<>(values);
+                graph.addSeries(series);
                 graph.getViewport().setXAxisBoundsManual(true);
-                graph.getViewport().setMaxX(30); //so you can see last label
-                gridLabelRenderer.setVerticalAxisTitle("Humidity"); //set vertical axis title
-                gridLabelRenderer.setHorizontalAxisTitle("Day"); //set horizontal axis title
-                gridLabelRenderer.setNumHorizontalLabels(10); //set number of horizontal labels
-                graph.getGridLabelRenderer().reloadStyles(); //reload style
+                graph.getViewport().setMaxX(4); //so you can see last label
+                gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.humidity)); //set vertical axis title
+                gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.week)); //set horizontal axis title
+                gridLabelRenderer.setNumHorizontalLabels(4);
+                graph.getGridLabelRenderer().reloadStyles();
             }
-                       /* graph.removeAllSeries(); //clear last graph
-                        values = new DataPoint[7]; //7 days
-                        for (int i =0,k=power.length-672;i<values.length;i++,k+=96) //7 entries, k=end of array - (24*4)*7
-                        {
-                            for(int x=0;x<96;x++) //combine 96 15 min entries for 1 day
-                            {
-                                num+=power[k+x]; //add 96 entries into one variable
-                            }
-                            values[i] = new DataPoint(i,num/96); //average the 96 numbers
-                            num=0.0; //reset num so it can be used again
-                        }
-                        series = new LineGraphSeries<>(values);
-                        graph.addSeries(series);
-                        graph.getViewport().setXAxisBoundsManual(true);
-                        graph.getViewport().setMaxX(7); //so you can see last label
-                        gridLabelRenderer.setVerticalAxisTitle("Voltage");
-                        gridLabelRenderer.setHorizontalAxisTitle("Day");
-                        gridLabelRenderer.setNumHorizontalLabels(7);
-                        graph.getGridLabelRenderer().reloadStyles();*/
         }
+        //temperature
         else if(spinner1.getSelectedItemPosition()==2){
             graph.removeAllSeries(); //clear last graph
-
-            ///////////
-
-            values = new DataPoint[3];
-            values[0] = new DataPoint(0, temperature[0]);
-            values[1] = new DataPoint(1, temperature[1]);
-            values[2] = new DataPoint(2, temperature[2]);
-
-            ///////////
-
-                        /*values = new DataPoint[24]; //24 hours
-                        for (int i =0,k=power.length-96;i<values.length;i++,k+=4) //24 entries, k=end of the array - 24*4
-                        {
-                            for(int x=0;x<4;x++) //combine four 15 min entries for 1 hour
-                            {
-                                num+=power[k+x]; //add four entries into one variable
-                            }
-                            values[i] = new DataPoint(i,num/4); //average of the four numbers
-                            num=0.0; //reset num so it can be used again
-                        }*/
             if(spinner2.getSelectedItemPosition() == 0) {
+                //REAL DATA
+                /*values = new DataPoint[24]; //24 hours
+                for (int i =0,k=faketemp.length-96;i<values.length;i++,k+=4) //24 entries, k=end of the array - 24*4
+                {
+                    for(int x=0;x<4;x++) //combine four 15 min entries for 1 hour
+                    {
+                        num+=faketemp[k+x]; //add four entries into one variable
+                    }
+                    values[i] = new DataPoint(i,num/4); //average of the four numbers
+                    num=0.0; //reset num so it can be used again
+                }
                 series = new LineGraphSeries<>(values); //add values to series
                 graph.addSeries(series); //add series to graph
                 graph.getViewport().setXAxisBoundsManual(true);
                 graph.getViewport().setMaxX(24); //so you can see last label
-                gridLabelRenderer.setVerticalAxisTitle("Temperature"); //set vertical axis title
+                gridLabelRenderer.setVerticalAxisTitle("Humidity"); //set vertical axis title
                 gridLabelRenderer.setHorizontalAxisTitle("Hour"); //set horizontal axis title
                 gridLabelRenderer.setNumHorizontalLabels(12); //set number of horizontal labels
-                graph.getGridLabelRenderer().reloadStyles(); //reload style
+                graph.getGridLabelRenderer().reloadStyles(); //reload style*/
             }
             else if(spinner2.getSelectedItemPosition()  == 1) {
-                series = new LineGraphSeries<>(values); //add values to series
-                graph.addSeries(series); //add series to graph
+                values = new DataPoint[7]; //7 days
+                for (int i =0,k=faketemp.length-672;i<values.length;i++,k+=96) //7 entries, k=end of array - (24*4)*7
+                {
+                    for(int x=0;x<96;x++) //combine 96 15 min entries for 1 day
+                    {
+                        num+=faketemp[k+x]; //add 96 entries into one variable
+                    }
+                    values[i] = new DataPoint(i,num/96); //average the 96 numbers
+                    num=0.0; //reset num so it can be used again
+                }
+                series = new LineGraphSeries<>(values);
+                graph.addSeries(series);
                 graph.getViewport().setXAxisBoundsManual(true);
                 graph.getViewport().setMaxX(7); //so you can see last label
-                gridLabelRenderer.setVerticalAxisTitle("Temperature"); //set vertical axis title
-                gridLabelRenderer.setHorizontalAxisTitle("Day"); //set horizontal axis title
-                gridLabelRenderer.setNumHorizontalLabels(7); //set number of horizontal labels
-                graph.getGridLabelRenderer().reloadStyles(); //reload style
+                gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.temperature_c)); //set vertical axis title
+                gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.day)); //set horizontal axis title
+                gridLabelRenderer.setNumHorizontalLabels(7);
+                graph.getGridLabelRenderer().reloadStyles();
             }
             else if(spinner2.getSelectedItemPosition()  == 2) {
-                series = new LineGraphSeries<>(values); //add values to series
-                graph.addSeries(series); //add series to graph
+                //fake data
+                values = new DataPoint[4]; //4 weeks
+                for (int i =0,k=faketemp.length-2688;i<values.length;i++,k+=672) //4 entries, k=end of array = ((24*4)*7)*4
+                {
+                    for(int x=0;x<672;x++) //combine 672 15 min entries int one vatiable
+                    {
+                        num+=faketemp[k+x]; //add 672 entries into one variable
+                    }
+                    values[i] = new DataPoint(i,num/672); //average the 672 numbers
+                    num=0.0; //reset num so it can be used again
+                }
+                series = new LineGraphSeries<>(values);
+                graph.addSeries(series);
                 graph.getViewport().setXAxisBoundsManual(true);
-                graph.getViewport().setMaxX(30); //so you can see last label
-                gridLabelRenderer.setVerticalAxisTitle("Temperature"); //set vertical axis title
-                gridLabelRenderer.setHorizontalAxisTitle("Day"); //set horizontal axis title
-                gridLabelRenderer.setNumHorizontalLabels(10); //set number of horizontal labels
-                graph.getGridLabelRenderer().reloadStyles(); //reload style
+                graph.getViewport().setMaxX(4); //so you can see last label
+                gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.temperature_c)); //set vertical axis title
+                gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.week)); //set horizontal axis title
+                gridLabelRenderer.setNumHorizontalLabels(4);
+                graph.getGridLabelRenderer().reloadStyles();
             }
-                        /*graph.removeAllSeries(); //clear last graph
-                        values = new DataPoint[4]; //4 weeks
-                        for (int i =0,k=power.length-2688;i<values.length;i++,k+=672) //4 entries, k=end of array = ((24*4)*7)*4
-                        {
-                            for(int x=0;x<672;x++) //combine 672 15 min entries int one vatiable
-                            {
-                                num+=power[k+x]; //add 672 entries into one variable
-                            }
-                            values[i] = new DataPoint(i,num/672); //average the 672 numbers
-                            num=0.0; //reset num so it can be used again
-                        }
-                        series = new LineGraphSeries<>(values);
-                        graph.addSeries(series);
-                        graph.getViewport().setXAxisBoundsManual(true);
-                        graph.getViewport().setMaxX(4); //so you can see last label
-                        gridLabelRenderer.setVerticalAxisTitle("Voltage");
-                        gridLabelRenderer.setHorizontalAxisTitle("Week");
-                        gridLabelRenderer.setNumHorizontalLabels(4);
-                        graph.getGridLabelRenderer().reloadStyles();*/
         }
         else if(spinner1.getSelectedItemPosition() == 3) {
             graph.removeAllSeries(); //clear last graph
@@ -438,34 +473,56 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                             num=0.0; //reset num so it can be used again
                         }*/
             if(spinner2.getSelectedItemPosition() == 0) {
-                series = new LineGraphSeries<>(values); //add values to series
+                //REAL DATA
+                /*series = new LineGraphSeries<>(values); //add values to series
                 graph.addSeries(series); //add series to graph
                 graph.getViewport().setXAxisBoundsManual(true);
                 graph.getViewport().setMaxX(24); //so you can see last label
                 gridLabelRenderer.setVerticalAxisTitle("Barometric"); //set vertical axis title
                 gridLabelRenderer.setHorizontalAxisTitle("Hour"); //set horizontal axis title
                 gridLabelRenderer.setNumHorizontalLabels(12); //set number of horizontal labels
-                graph.getGridLabelRenderer().reloadStyles(); //reload style
+                graph.getGridLabelRenderer().reloadStyles(); //reload style*/
             }
             else if(spinner2.getSelectedItemPosition()  == 1) {
-                series = new LineGraphSeries<>(values); //add values to series
-                graph.addSeries(series); //add series to graph
+                values = new DataPoint[7]; //7 days
+                for (int i =0,k=fakebarometric.length-672;i<values.length;i++,k+=96) //7 entries, k=end of array - (24*4)*7
+                {
+                    for(int x=0;x<96;x++) //combine 96 15 min entries for 1 day
+                    {
+                        num+=fakebarometric[k+x]; //add 96 entries into one variable
+                    }
+                    values[i] = new DataPoint(i,num/96); //average the 96 numbers
+                    num=0.0; //reset num so it can be used again
+                }
+                series = new LineGraphSeries<>(values);
+                graph.addSeries(series);
                 graph.getViewport().setXAxisBoundsManual(true);
                 graph.getViewport().setMaxX(7); //so you can see last label
-                gridLabelRenderer.setVerticalAxisTitle("Barometric"); //set vertical axis title
-                gridLabelRenderer.setHorizontalAxisTitle("Day"); //set horizontal axis title
-                gridLabelRenderer.setNumHorizontalLabels(7); //set number of horizontal labels
-                graph.getGridLabelRenderer().reloadStyles(); //reload style
+                gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.barometric)); //set vertical axis title
+                gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.day)); //set horizontal axis title
+                gridLabelRenderer.setNumHorizontalLabels(7);
+                graph.getGridLabelRenderer().reloadStyles();
             }
             else if(spinner2.getSelectedItemPosition()  == 2) {
-                series = new LineGraphSeries<>(values); //add values to series
-                graph.addSeries(series); //add series to graph
+                //fake data
+                values = new DataPoint[4]; //4 weeks
+                for (int i =0,k=fakebarometric.length-2688;i<values.length;i++,k+=672) //4 entries, k=end of array = ((24*4)*7)*4
+                {
+                    for(int x=0;x<672;x++) //combine 672 15 min entries int one vatiable
+                    {
+                        num+=fakebarometric[k+x]; //add 672 entries into one variable
+                    }
+                    values[i] = new DataPoint(i,num/672); //average the 672 numbers
+                    num=0.0; //reset num so it can be used again
+                }
+                series = new LineGraphSeries<>(values);
+                graph.addSeries(series);
                 graph.getViewport().setXAxisBoundsManual(true);
-                graph.getViewport().setMaxX(30); //so you can see last label
-                gridLabelRenderer.setVerticalAxisTitle("Barometric"); //set vertical axis title
-                gridLabelRenderer.setHorizontalAxisTitle("Day"); //set horizontal axis title
-                gridLabelRenderer.setNumHorizontalLabels(10); //set number of horizontal labels
-                graph.getGridLabelRenderer().reloadStyles(); //reload style
+                graph.getViewport().setMaxX(4); //so you can see last label
+                gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.barometric)); //set vertical axis title
+                gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.week)); //set horizontal axis title
+                gridLabelRenderer.setNumHorizontalLabels(4);
+                graph.getGridLabelRenderer().reloadStyles();
             }
         }
         else if(spinner1.getSelectedItemPosition() == 4) {
@@ -491,34 +548,56 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                             num=0.0; //reset num so it can be used again
                         }*/
             if(spinner2.getSelectedItemPosition() == 0) {
-                series = new LineGraphSeries<>(values); //add values to series
+                //REAL DATA
+                /*series = new LineGraphSeries<>(values); //add values to series
                 graph.addSeries(series); //add series to graph
                 graph.getViewport().setXAxisBoundsManual(true);
                 graph.getViewport().setMaxX(24); //so you can see last label
                 gridLabelRenderer.setVerticalAxisTitle("Light"); //set vertical axis title
                 gridLabelRenderer.setHorizontalAxisTitle("Hour"); //set horizontal axis title
                 gridLabelRenderer.setNumHorizontalLabels(12); //set number of horizontal labels
-                graph.getGridLabelRenderer().reloadStyles(); //reload style
+                graph.getGridLabelRenderer().reloadStyles(); //reload style*/
             }
             else if(spinner2.getSelectedItemPosition()  == 1) {
-                series = new LineGraphSeries<>(values); //add values to series
-                graph.addSeries(series); //add series to graph
+                values = new DataPoint[7]; //7 days
+                for (int i =0,k=fakelight.length-672;i<values.length;i++,k+=96) //7 entries, k=end of array - (24*4)*7
+                {
+                    for(int x=0;x<96;x++) //combine 96 15 min entries for 1 day
+                    {
+                        num+=fakelight[k+x]; //add 96 entries into one variable
+                    }
+                    values[i] = new DataPoint(i,num/96); //average the 96 numbers
+                    num=0.0; //reset num so it can be used again
+                }
+                series = new LineGraphSeries<>(values);
+                graph.addSeries(series);
                 graph.getViewport().setXAxisBoundsManual(true);
                 graph.getViewport().setMaxX(7); //so you can see last label
-                gridLabelRenderer.setVerticalAxisTitle("Light"); //set vertical axis title
-                gridLabelRenderer.setHorizontalAxisTitle("Day"); //set horizontal axis title
-                gridLabelRenderer.setNumHorizontalLabels(7); //set number of horizontal labels
-                graph.getGridLabelRenderer().reloadStyles(); //reload style
+                gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.light)); //set vertical axis title
+                gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.day)); //set horizontal axis title
+                gridLabelRenderer.setNumHorizontalLabels(7);
+                graph.getGridLabelRenderer().reloadStyles();
             }
             else if(spinner2.getSelectedItemPosition()  == 2) {
-                series = new LineGraphSeries<>(values); //add values to series
-                graph.addSeries(series); //add series to graph
+                //fake data
+                values = new DataPoint[4]; //4 weeks
+                for (int i =0,k=fakelight.length-2688;i<values.length;i++,k+=672) //4 entries, k=end of array = ((24*4)*7)*4
+                {
+                    for(int x=0;x<672;x++) //combine 672 15 min entries int one vatiable
+                    {
+                        num+=fakelight[k+x]; //add 672 entries into one variable
+                    }
+                    values[i] = new DataPoint(i,num/672); //average the 672 numbers
+                    num=0.0; //reset num so it can be used again
+                }
+                series = new LineGraphSeries<>(values);
+                graph.addSeries(series);
                 graph.getViewport().setXAxisBoundsManual(true);
-                graph.getViewport().setMaxX(30); //so you can see last label
-                gridLabelRenderer.setVerticalAxisTitle("Light"); //set vertical axis title
-                gridLabelRenderer.setHorizontalAxisTitle("Day"); //set horizontal axis title
-                gridLabelRenderer.setNumHorizontalLabels(10); //set number of horizontal labels
-                graph.getGridLabelRenderer().reloadStyles(); //reload style
+                graph.getViewport().setMaxX(4); //so you can see last label
+                gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.light)); //set vertical axis title
+                gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.week)); //set horizontal axis title
+                gridLabelRenderer.setNumHorizontalLabels(4);
+                graph.getGridLabelRenderer().reloadStyles();
             }
         }
     }
