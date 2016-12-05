@@ -62,6 +62,10 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     String[] time;
     String[] date;
 
+    //constants
+    private int ONE_DAY = 96;
+    private int ONE_WEEK = 672;
+
     //fake data variables
     double[] fakepower;
     double[] faketemp;
@@ -288,13 +292,13 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             else if(spinner2.getSelectedItemPosition()  == 1) {
                 //fake data
                 values = new DataPoint[7]; //7 days
-                for (int i =0,k=fakepower.length-672;i<values.length;i++,k+=96) //7 entries, k=end of array - (24*4)*7
+                for (int i =0,k=fakepower.length-ONE_WEEK;i<values.length;i++,k+=ONE_DAY) //7 entries, k=end of array - (24*4)*7
                 {
-                    for(int x=0;x<96;x++) //combine 96 15 min entries for 1 day
+                    for(int x=0;x<ONE_DAY;x++) //combine 96 15 min entries for 1 day
                     {
                         num+=fakepower[k+x]; //add 96 entries into one variable
                     }
-                    values[i] = new DataPoint(i,num/96); //average the 96 numbers
+                    values[i] = new DataPoint(i,num/ONE_DAY); //average the 96 numbers
                     num=0.0; //reset num so it can be used again
                 }
                 series = new LineGraphSeries<>(values);
