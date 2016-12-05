@@ -73,5 +73,8 @@
     <string name="celsius">Celsius</string>
     <string name="fahrenheit">Fahrenheit</string>
 
+    <!-- menu text -->
+    <string name="action_settings">Settings</string>
+
 
 </resources>
