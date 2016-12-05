@@ -3,6 +3,7 @@
     package="brave8.spring">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,8 +17,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity" />
+        <activity android:name=".MainActivity" />
+
+        <activity android:name=".SettingsActivity"
+        android:label="@string/settings"
+        android:parentActivityName=".LoginActivity"/>
 
     </application>
 

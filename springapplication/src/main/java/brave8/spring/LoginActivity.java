@@ -106,8 +106,10 @@ public class LoginActivity extends AppCompatActivity {
             case android.R.id.home:
                 return true;
 
+            //changing this in furture so it doesn't appear on the login actvity
             case R.id.action_settings:
-                Toast.makeText(LoginActivity.this, "To be implemented, go to settings", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, SettingsActivity.class);
+                startActivity(intent);
                 return true;
 
             default:
