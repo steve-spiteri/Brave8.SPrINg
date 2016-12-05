@@ -186,7 +186,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             light_text.setText("Sunny"); //-------------------------------------------temp hard coded string
 
         }
-        else if (mPage == 2) {
+        else{
 
             //fake data-----------------------------------------------------------------------------
             Random rn = new Random();
@@ -243,34 +243,6 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
 
             spinner1.setOnItemSelectedListener(this);
             spinner2.setOnItemSelectedListener(this);
-        }
-        else{
-            Switch theme_switch = (Switch)view.findViewById(R.id.controls_application_theme);
-            final TextView theme_text = (TextView)view.findViewById(R.id.text_theme_name);
-            theme_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        //ThemeUtils.changeToTheme(getActivity(), ThemeUtils.DARK);
-                        theme_text.setText(R.string.dark_theme);
-                    } else {
-                        //ThemeUtils.changeToTheme(getActivity(), ThemeUtils.LIGHT);
-                        theme_text.setText(R.string.light_theme);
-                    }
-                }
-            });
-
-            Switch temperature_switch = (Switch)view.findViewById(R.id.controls_change_temperature);
-            final TextView temperature_text = (TextView)view.findViewById(R.id.text_temperature);
-            temperature_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        temperature_text.setText(R.string.fahrenheit);
-
-                    } else {
-                        temperature_text.setText(R.string.celsius);
-                    }
-                }
-            });
         }
     }
     @Override
