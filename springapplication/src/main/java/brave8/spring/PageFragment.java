@@ -37,13 +37,13 @@ import java.util.Random;
 
 public class PageFragment extends Fragment implements OnItemSelectedListener {
 
-    public static final String DATA_URL_FETCH_BY_LOGIN = " http://c1f13104.ngrok.io/spring/fetch_data_by_login.php?id=2";
+    public static final String DATA_URL_FETCH_BY_LOGIN = " http://springdb.eu5.org//spring/fetch_data_by_login.php?id=2";
     private ProgressDialog loading;
 
     public static final String ARG_PAGE = "ARG_PAGE";
 
     private int mPage;
-
+    //Hello class!
     //data variables
     GraphView graph;
     LineGraphSeries<DataPoint> series;
