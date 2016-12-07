@@ -3,8 +3,8 @@
 
     <item
         style="@style/AppTheme"
-        android:id="@+id/search"
-        android:title="@string/action_preferences"
+        android:id="@+id/settings"
+        android:title="@string/action_settings"
         android:icon="@android:drawable/ic_menu_preferences"
         app:showAsAction="always"
         android:orderInCategory="1"></item>
