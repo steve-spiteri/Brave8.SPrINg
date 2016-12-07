@@ -37,13 +37,13 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_home_icon_silhouette);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_cube);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_gear_option);
+        //tabLayout.getTabAt(2).setIcon(R.drawable.ic_gear_option);
     }
 
 
     public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
-        final int PAGE_COUNT = 3;
-        private String tabTitles[] = new String[] { "Home", "Data", "Settings"};
+        final int PAGE_COUNT = 2;
+        private String tabTitles[] = new String[] { getString(R.string.home), getString(R.string.data)};
         private Context context;
 
         public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {

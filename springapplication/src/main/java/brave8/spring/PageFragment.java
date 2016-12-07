@@ -62,6 +62,14 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     String[] time;
     String[] date;
 
+    //constants
+    private int ONE_DAY = 96;
+    private int ONE_WEEK = 672;
+    private int ONE_MONTH = 2688;
+    private int SEVEN_DAYS = 7;
+    private int FOUR_WEEKS = 4;
+
+
     //fake data variables
     double[] fakepower;
     double[] faketemp;
@@ -116,7 +124,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(),error.getMessage().toString(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(),error.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -175,12 +183,12 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             barometric_text.setText(getResources().getString(R.string.barometric_date,barometric[barometric.length-1]));
 
             TextView light_text = (TextView) view.findViewById(R.id.light_data);
-            light_text.setText("Sunny");
+            light_text.setText("Sunny"); //-------------------------------------------temp hard coded string
 
         }
-        else if (mPage == 2) {
+        else{
 
-            //fake data
+            //fake data-----------------------------------------------------------------------------
             Random rn = new Random();
             fakepower = new double[4000];
             for (int i=0;i<fakepower.length;i++)
@@ -207,6 +215,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             {
                 fakehumidity[i]= 30.0 + (70.0 - 30.0) * rn.nextDouble();
             }
+            //--------------------------------------------------------------------------------------
 
             spinner1 = (Spinner) view.findViewById(R.id.spinner1);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.source_array, android.R.layout.simple_spinner_item);
@@ -235,34 +244,6 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             spinner1.setOnItemSelectedListener(this);
             spinner2.setOnItemSelectedListener(this);
         }
-        else{
-            Switch theme_switch = (Switch)view.findViewById(R.id.controls_application_theme);
-            final TextView theme_text = (TextView)view.findViewById(R.id.text_theme_name);
-            theme_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        //ThemeUtils.changeToTheme(getActivity(), ThemeUtils.DARK);
-                        theme_text.setText(R.string.dark_theme);
-                    } else {
-                        //ThemeUtils.changeToTheme(getActivity(), ThemeUtils.LIGHT);
-                        theme_text.setText(R.string.light_theme);
-                    }
-                }
-            });
-
-            Switch temperature_switch = (Switch)view.findViewById(R.id.controls_change_temperature);
-            final TextView temperature_text = (TextView)view.findViewById(R.id.text_temperature);
-            temperature_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        temperature_text.setText(R.string.fahrenheit);
-
-                    } else {
-                        temperature_text.setText(R.string.celsius);
-                    }
-                }
-            });
-        }
     }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -287,14 +268,14 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             }
             else if(spinner2.getSelectedItemPosition()  == 1) {
                 //fake data
-                values = new DataPoint[7]; //7 days
-                for (int i =0,k=fakepower.length-672;i<values.length;i++,k+=96) //7 entries, k=end of array - (24*4)*7
+                values = new DataPoint[SEVEN_DAYS]; //7 days
+                for (int i =0,k=fakepower.length-ONE_WEEK;i<values.length;i++,k+=ONE_DAY) //7 entries, k=end of array - (24*4)*7
                 {
-                    for(int x=0;x<96;x++) //combine 96 15 min entries for 1 day
+                    for(int x=0;x<ONE_DAY;x++) //combine 96 15 min entries for 1 day
                     {
                         num+=fakepower[k+x]; //add 96 entries into one variable
                     }
-                    values[i] = new DataPoint(i,num/96); //average the 96 numbers
+                    values[i] = new DataPoint(i,num/ONE_DAY); //average the 96 numbers
                     num=0.0; //reset num so it can be used again
                 }
                 series = new LineGraphSeries<>(values);
@@ -308,14 +289,14 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             }
             else if(spinner2.getSelectedItemPosition()  == 2) {
                 //fake data
-                values = new DataPoint[4]; //4 weeks
-                for (int i =0,k=fakepower.length-2688;i<values.length;i++,k+=672) //4 entries, k=end of array = ((24*4)*7)*4
+                values = new DataPoint[FOUR_WEEKS]; //4 weeks
+                for (int i =0,k=fakepower.length-ONE_MONTH;i<values.length;i++,k+=ONE_WEEK) //4 entries, k=end of array = ((24*4)*7)*4
                 {
-                    for(int x=0;x<672;x++) //combine 672 15 min entries int one vatiable
+                    for(int x=0;x<ONE_WEEK;x++) //combine 672 15 min entries int one vatiable
                     {
                         num+=fakepower[k+x]; //add 672 entries into one variable
                     }
-                    values[i] = new DataPoint(i,num/672); //average the 672 numbers
+                    values[i] = new DataPoint(i,num/ONE_WEEK); //average the 672 numbers
                     num=0.0; //reset num so it can be used again
                 }
                 series = new LineGraphSeries<>(values);
@@ -350,14 +331,14 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                 graph.getGridLabelRenderer().reloadStyles(); //reload style
             }
             else if(spinner2.getSelectedItemPosition()  == 1) {
-                values = new DataPoint[7]; //7 days
-                for (int i =0,k=fakehumidity.length-672;i<values.length;i++,k+=96) //7 entries, k=end of array - (24*4)*7
+                values = new DataPoint[SEVEN_DAYS]; //7 days
+                for (int i =0,k=fakehumidity.length-ONE_WEEK;i<values.length;i++,k+=ONE_DAY) //7 entries, k=end of array - (24*4)*7
                 {
-                    for(int x=0;x<96;x++) //combine 96 15 min entries for 1 day
+                    for(int x=0;x<ONE_DAY;x++) //combine 96 15 min entries for 1 day
                     {
                         num+=fakehumidity[k+x]; //add 96 entries into one variable
                     }
-                    values[i] = new DataPoint(i,num/96); //average the 96 numbers
+                    values[i] = new DataPoint(i,num/ONE_DAY); //average the 96 numbers
                     num=0.0; //reset num so it can be used again
                 }
                 series = new LineGraphSeries<>(values);
@@ -370,14 +351,14 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                 graph.getGridLabelRenderer().reloadStyles();
             }
             else if(spinner2.getSelectedItemPosition()  == 2) {
-                values = new DataPoint[4]; //4 weeks
-                for (int i =0,k=fakehumidity.length-2688;i<values.length;i++,k+=672) //4 entries, k=end of array = ((24*4)*7)*4
+                values = new DataPoint[FOUR_WEEKS]; //4 weeks
+                for (int i =0,k=fakehumidity.length-ONE_MONTH;i<values.length;i++,k+=ONE_WEEK) //4 entries, k=end of array = ((24*4)*7)*4
                 {
-                    for(int x=0;x<672;x++) //combine 672 15 min entries int one vatiable
+                    for(int x=0;x<ONE_WEEK;x++) //combine 672 15 min entries int one vatiable
                     {
                         num+=fakehumidity[k+x]; //add 672 entries into one variable
                     }
-                    values[i] = new DataPoint(i,num/672); //average the 672 numbers
+                    values[i] = new DataPoint(i,num/ONE_WEEK); //average the 672 numbers
                     num=0.0; //reset num so it can be used again
                 }
                 series = new LineGraphSeries<>(values);
@@ -411,14 +392,14 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                 graph.getGridLabelRenderer().reloadStyles(); //reload style
             }
             else if(spinner2.getSelectedItemPosition()  == 1) {
-                values = new DataPoint[7]; //7 days
-                for (int i =0,k=faketemp.length-672;i<values.length;i++,k+=96) //7 entries, k=end of array - (24*4)*7
+                values = new DataPoint[SEVEN_DAYS]; //7 days
+                for (int i =0,k=faketemp.length-ONE_WEEK;i<values.length;i++,k+=ONE_DAY) //7 entries, k=end of array - (24*4)*7
                 {
-                    for(int x=0;x<96;x++) //combine 96 15 min entries for 1 day
+                    for(int x=0;x<ONE_DAY;x++) //combine 96 15 min entries for 1 day
                     {
                         num+=faketemp[k+x]; //add 96 entries into one variable
                     }
-                    values[i] = new DataPoint(i,num/96); //average the 96 numbers
+                    values[i] = new DataPoint(i,num/ONE_DAY); //average the 96 numbers
                     num=0.0; //reset num so it can be used again
                 }
                 series = new LineGraphSeries<>(values);
@@ -432,14 +413,14 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             }
             else if(spinner2.getSelectedItemPosition()  == 2) {
                 //fake data
-                values = new DataPoint[4]; //4 weeks
-                for (int i =0,k=faketemp.length-2688;i<values.length;i++,k+=672) //4 entries, k=end of array = ((24*4)*7)*4
+                values = new DataPoint[FOUR_WEEKS]; //4 weeks
+                for (int i =0,k=faketemp.length-ONE_MONTH;i<values.length;i++,k+=ONE_WEEK) //4 entries, k=end of array = ((24*4)*7)*4
                 {
-                    for(int x=0;x<672;x++) //combine 672 15 min entries int one vatiable
+                    for(int x=0;x<ONE_WEEK;x++) //combine 672 15 min entries int one vatiable
                     {
                         num+=faketemp[k+x]; //add 672 entries into one variable
                     }
-                    values[i] = new DataPoint(i,num/672); //average the 672 numbers
+                    values[i] = new DataPoint(i,num/ONE_WEEK); //average the 672 numbers
                     num=0.0; //reset num so it can be used again
                 }
                 series = new LineGraphSeries<>(values);
@@ -474,14 +455,14 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                 graph.getGridLabelRenderer().reloadStyles(); //reload style
             }
             else if(spinner2.getSelectedItemPosition()  == 1) {
-                values = new DataPoint[7]; //7 days
-                for (int i =0,k=fakebarometric.length-672;i<values.length;i++,k+=96) //7 entries, k=end of array - (24*4)*7
+                values = new DataPoint[SEVEN_DAYS]; //7 days
+                for (int i =0,k=fakebarometric.length-ONE_WEEK;i<values.length;i++,k+=ONE_DAY) //7 entries, k=end of array - (24*4)*7
                 {
-                    for(int x=0;x<96;x++) //combine 96 15 min entries for 1 day
+                    for(int x=0;x<ONE_DAY;x++) //combine 96 15 min entries for 1 day
                     {
                         num+=fakebarometric[k+x]; //add 96 entries into one variable
                     }
-                    values[i] = new DataPoint(i,num/96); //average the 96 numbers
+                    values[i] = new DataPoint(i,num/ONE_DAY); //average the 96 numbers
                     num=0.0; //reset num so it can be used again
                 }
                 series = new LineGraphSeries<>(values);
@@ -495,14 +476,14 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             }
             else if(spinner2.getSelectedItemPosition()  == 2) {
                 //fake data
-                values = new DataPoint[4]; //4 weeks
-                for (int i =0,k=fakebarometric.length-2688;i<values.length;i++,k+=672) //4 entries, k=end of array = ((24*4)*7)*4
+                values = new DataPoint[FOUR_WEEKS]; //4 weeks
+                for (int i =0,k=fakebarometric.length-ONE_MONTH;i<values.length;i++,k+=ONE_WEEK) //4 entries, k=end of array = ((24*4)*7)*4
                 {
-                    for(int x=0;x<672;x++) //combine 672 15 min entries int one vatiable
+                    for(int x=0;x<ONE_WEEK;x++) //combine 672 15 min entries int one vatiable
                     {
                         num+=fakebarometric[k+x]; //add 672 entries into one variable
                     }
-                    values[i] = new DataPoint(i,num/672); //average the 672 numbers
+                    values[i] = new DataPoint(i,num/ONE_WEEK); //average the 672 numbers
                     num=0.0; //reset num so it can be used again
                 }
                 series = new LineGraphSeries<>(values);
@@ -537,14 +518,14 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                 graph.getGridLabelRenderer().reloadStyles(); //reload style
             }
             else if(spinner2.getSelectedItemPosition()  == 1) {
-                values = new DataPoint[7]; //7 days
-                for (int i =0,k=fakelight.length-672;i<values.length;i++,k+=96) //7 entries, k=end of array - (24*4)*7
+                values = new DataPoint[SEVEN_DAYS]; //7 days
+                for (int i =0,k=fakelight.length-ONE_WEEK;i<values.length;i++,k+=ONE_DAY) //7 entries, k=end of array - (24*4)*7
                 {
-                    for(int x=0;x<96;x++) //combine 96 15 min entries for 1 day
+                    for(int x=0;x<ONE_DAY;x++) //combine 96 15 min entries for 1 day
                     {
                         num+=fakelight[k+x]; //add 96 entries into one variable
                     }
-                    values[i] = new DataPoint(i,num/96); //average the 96 numbers
+                    values[i] = new DataPoint(i,num/ONE_DAY); //average the 96 numbers
                     num=0.0; //reset num so it can be used again
                 }
                 series = new LineGraphSeries<>(values);
@@ -558,14 +539,14 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             }
             else if(spinner2.getSelectedItemPosition()  == 2) {
                 //fake data
-                values = new DataPoint[4]; //4 weeks
-                for (int i =0,k=fakelight.length-2688;i<values.length;i++,k+=672) //4 entries, k=end of array = ((24*4)*7)*4
+                values = new DataPoint[FOUR_WEEKS]; //4 weeks
+                for (int i =0,k=fakelight.length-ONE_MONTH;i<values.length;i++,k+=ONE_WEEK) //4 entries, k=end of array = ((24*4)*7)*4
                 {
-                    for(int x=0;x<672;x++) //combine 672 15 min entries int one vatiable
+                    for(int x=0;x<ONE_MONTH;x++) //combine 672 15 min entries int one vatiable
                     {
                         num+=fakelight[k+x]; //add 672 entries into one variable
                     }
-                    values[i] = new DataPoint(i,num/672); //average the 672 numbers
+                    values[i] = new DataPoint(i,num/ONE_MONTH); //average the 672 numbers
                     num=0.0; //reset num so it can be used again
                 }
                 series = new LineGraphSeries<>(values);

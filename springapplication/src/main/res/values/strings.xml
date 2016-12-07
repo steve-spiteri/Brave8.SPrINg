@@ -63,7 +63,7 @@
         <item>30 Days</item>
     </string-array>
 
-    <!-- settings -->
+    <!-- settings activity -->
     <string name="about_application">About Application</string>
     <string name="app_information">\nSPrINg Application v1.0\nBuilt on November. 14, 2016\n\nApplication Authors:\n\tSteven Spiteri\n\tRichard Burak\n\tSalvatore Angilletta</string>
     <string name="application_theme">Application Theme</string>
@@ -72,6 +72,9 @@
     <string name="change_temperature_measurement">Change Temperature Measurement</string>
     <string name="celsius">Celsius</string>
     <string name="fahrenheit">Fahrenheit</string>
+
+    <!-- menu text -->
+    <string name="action_settings">Settings</string>
 
 
 </resources>
