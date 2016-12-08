@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,25 +35,23 @@ public class LoginActivity extends AppCompatActivity {
     Button signIn;
     EditText dbUser, dbPass;
     LinearLayout status_layout, login_layout;
-    TextView status;
+    TextView status, incorrect;
+    String[] userInfo;
+    CheckBox rememberMe;
+
     public static final String MY_PREFS_NAME = "AppUsers";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        new CheckStatus().execute();
+        new CheckStatusTask().execute();
 
         //if device is xlarge(tablet) make the orientation always landscape
         int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
         if(screenSize == Configuration.SCREENLAYOUT_SIZE_XLARGE){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
-
-        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-        editor.putString("username", "user");
-        editor.putString("password", "password");
-        editor.apply();
 
         signIn = (Button) findViewById(R.id.sign_in);
         signIn.setOnClickListener(new View.OnClickListener() {
@@ -70,45 +69,40 @@ public class LoginActivity extends AppCompatActivity {
                 String dbUserStr = dbUser.getText().toString();
                 String dbPassStr = dbPass.getText().toString();
 
-                SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-                String restoredUser = prefs.getString("username", null);
-                String restoredPass = prefs.getString("password", null);
-
                 boolean loginError = false;
                 if(dbUserStr.equals("")){
                     dbUser.setError(getString(R.string.user_empty_error));
                     loginError = true;
                 }
-                else if(!restoredUser.equals(dbUserStr)){
-                    dbUser.setError(getString(R.string.user_error));
-                    loginError = true;
-                }
+//                else if(restoredUser!=null&&!restoredUser.equals(dbUserStr)){
+//                    dbUser.setError(getString(R.string.user_error));
+//                    loginError = true;
+//                }
 
                 if(dbPassStr.equals("")){
                     dbPass.setError(getString(R.string.pass_empty_error));
                     loginError = true;
                 }
 
-                if(restoredUser.equals(dbUserStr)){
-                    if(dbPassStr.equals("")){
-                        dbPass.setError(getString(R.string.pass_empty_error));
-                        loginError = true;
-                    }
-                    else if(!restoredPass.equals(dbPassStr)){
-                        dbPass.setError(getString(R.string.pass_error));
-                        loginError = true;
-                    }
-                }
+//                if(restoredUser.equals(dbUserStr)){
+//                    if(dbPassStr.equals("")){
+//                        dbPass.setError(getString(R.string.pass_empty_error));
+//                        loginError = true;
+//                    }
+//                    else if(!restoredPass.equals(dbPassStr)){
+//                        dbPass.setError(getString(R.string.pass_error));
+//                        loginError = true;
+//                    }
+//                }
                 if(!loginError){
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                    userInfo = new String[] {dbUser.getText().toString(),dbPass.getText().toString()};
+                    new CheckLoginTask().execute(userInfo);
                 }
             }
         });
     }
 
-    private class CheckStatus extends AsyncTask<Void, Void, Integer> {
+    private class CheckStatusTask extends AsyncTask<Void, Void, Integer> {
 
         @Override
         protected Integer doInBackground(Void... v) {
@@ -126,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             HttpHandler sh = new HttpHandler();
-            String jsonStr = sh.makeServiceCall("http://springdb.eu5.org/spring/check_connection.php");;
+            String jsonStr = sh.makeServiceCall("http://springdb.eu5.org/spring/check_connection.php");
             if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
@@ -163,8 +157,20 @@ public class LoginActivity extends AppCompatActivity {
             status = (TextView) findViewById(R.id.status);
             if (result == 1)
             {
-                status_layout.setVisibility(View.GONE);
-                login_layout.setVisibility(View.VISIBLE);
+                SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+                String restoredUser = prefs.getString("username", null);
+                String restoredPass = prefs.getString("password", null);
+
+                if(restoredUser!=null&restoredPass!=null)
+                {
+                    userInfo = new String[]{restoredUser, restoredPass};
+                    new CheckLoginTask().execute(userInfo);
+                }
+                else
+                {
+                    status_layout.setVisibility(View.GONE);
+                    login_layout.setVisibility(View.VISIBLE);
+                }
             }
             else if (result == -1)
             {
@@ -175,6 +181,61 @@ public class LoginActivity extends AppCompatActivity {
                 status.setText(getString(R.string.databaseError));
             }
 
+        }
+    }
+
+    private class CheckLoginTask extends AsyncTask<String[], Void, Integer> {
+        @Override
+        protected Integer doInBackground(String[]... string) {
+            HttpHandler sh = new HttpHandler();
+            String login = "http://springdb.eu5.org/spring/login.php?user="+string[0][0]+"&pass="+string[0][1];
+            String jsonStr = sh.makeServiceCall(login);
+            if (jsonStr != null) {
+                try
+                {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    JSONArray result = jsonObj.getJSONArray("result");
+                    String db_conn = result.getJSONObject(0).getString("id_login");
+                    if(db_conn.equals("-1"))
+                    {
+                        return -1;
+                    }
+                    else{
+                        return Integer.parseInt(db_conn);
+                    }
+                } catch (JSONException e)
+                {
+                }
+            }
+            return -2;
+        }
+
+        protected void onPostExecute(Integer result) {
+            incorrect = (TextView) findViewById(R.id.incorrect);
+            rememberMe = (CheckBox) findViewById(R.id.rememberMe_checkBox);
+
+            if (result==-1)
+            {
+                incorrect.setText(R.string.userPassError);
+                dbUser.setText("");
+                dbPass.setText("");
+            }
+            else
+            {
+                if (rememberMe.isChecked())
+                {
+                    SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                    editor.putString("username", dbUser.getText().toString());
+                    editor.putString("password", dbPass.getText().toString());
+                    editor.apply();
+                }
+
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.putExtra("loginID", result);
+                    startActivity(intent);
+                    finish();
+            }
+            //Toast.makeText(LoginActivity.this,result,Toast.LENGTH_LONG).show();
         }
     }
 }

@@ -19,6 +19,7 @@
     <string name="remember_me">Remember Me</string>
     <string name="internetError">No network connection detected. Try again later.</string>
     <string name="databaseError">No database connection detected. Contact an administrator.</string>
+    <string name="userPassError">Username/Password Incorrect!</string>
 
     <!--home-->
     <string name="home">Home</string>
