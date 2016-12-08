@@ -306,6 +306,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                 graph.addSeries(series); //add series to graph
                 graph.getViewport().setXAxisBoundsManual(true);
                 graph.getViewport().setMaxX(24); //so you can see last label
+                graph.getViewport().setMaxY(10); //so you can see last label
                 gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.voltage)); //set vertical axis title
                 gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.hour)); //set horizontal axis title
                 gridLabelRenderer.setNumHorizontalLabels(12); //set number of horizontal labels

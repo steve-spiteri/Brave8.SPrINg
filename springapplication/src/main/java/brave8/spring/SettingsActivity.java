@@ -20,10 +20,8 @@ public class SettingsActivity extends AppCompatActivity {
         theme_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    //ThemeUtils.changeToTheme(getActivity(), ThemeUtils.DARK);
                     theme_text.setText(R.string.dark_theme);
                 } else {
-                    //ThemeUtils.changeToTheme(getActivity(), ThemeUtils.LIGHT);
                     theme_text.setText(R.string.light_theme);
                 }
             }

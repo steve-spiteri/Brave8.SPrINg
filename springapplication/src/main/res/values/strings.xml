@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SpringApplication</string>
+    <string name="app_name">Spring Application</string>
 
     <!--dialog-->
     <string name="back_pressed_title">Closing Application</string>
@@ -19,6 +19,7 @@
     <string name="remember_me">Remember Me</string>
     <string name="internetError">No network connection detected. Try again later.</string>
     <string name="databaseError">No database connection detected. Contact an administrator.</string>
+    <string name="userPassError">Username/Password Incorrect!</string>
 
     <!--home-->
     <string name="home">Home</string>
