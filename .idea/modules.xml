@@ -3,8 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Brave8.SPrINg.iml" filepath="$PROJECT_DIR$/Brave8.SPrINg.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Brave8.SPrINg.iml" filepath="$PROJECT_DIR$/Brave8.SPrINg.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/databasetest/databasetest.iml" filepath="$PROJECT_DIR$/databasetest/databasetest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/databasetest/databasetest.iml" filepath="$PROJECT_DIR$/databasetest/databasetest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springapplication/springapplication.iml" filepath="$PROJECT_DIR$/springapplication/springapplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/springapplication/springapplication.iml" filepath="$PROJECT_DIR$/springapplication/springapplication.iml" />
     </modules>
   </component>
