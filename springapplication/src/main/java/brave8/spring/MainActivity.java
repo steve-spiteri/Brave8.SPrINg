@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-
             return PAGE_COUNT;
         }
         @Override
@@ -67,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         }
         @Override
         public Fragment getItem(int position) {
+
 
             return PageFragment.create(position + 1);
         }
@@ -102,18 +102,12 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId())
         {
             case R.id.settings:
+                Intent stuff = getIntent();
                 Intent intent = new Intent(this, SettingsActivity.class);
+                intent.putExtra("loginID", stuff.getIntExtra("loginId", 2));
                 startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == 1){
-
-        }
     }
 }

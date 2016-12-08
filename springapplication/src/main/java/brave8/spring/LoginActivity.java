@@ -164,8 +164,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private class CheckLoginTask extends AsyncTask<String[], Void, Integer> {
 
-        ProgressDialog progressDialog = ProgressDialog.show(LoginActivity.this,"test","Test",false,false);
-
         @Override
         protected Integer doInBackground(String[]... string) {
             HttpHandler sh = new HttpHandler();

@@ -2,6 +2,7 @@ package brave8.spring;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -219,8 +220,17 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             TextView humidity_text = (TextView) view.findViewById(R.id.humidity_data);
             humidity_text.setText(getResources().getString(R.string.humidity_data,humidity[humidity.length-1]));
 
-            TextView temperature_text = (TextView) view.findViewById(R.id.temperature_data);
-            temperature_text.setText(getResources().getString(R.string.temperature_data,temperature[temperature.length-1],"C"));
+            SharedPreferences settings = getActivity().getSharedPreferences(LoginActivity.MY_PREFS_NAME, Context.MODE_PRIVATE);
+            if(settings.getString("temperature", "").equals("fahrenheit"))
+            {
+                TextView temperature_text = (TextView) view.findViewById(R.id.temperature_data);
+                temperature_text.setText(getResources().getString(R.string.temperature_data,(temperature[temperature.length-1] * 1.8) + 32,"F"));
+            }
+            else
+            {
+                TextView temperature_text = (TextView) view.findViewById(R.id.temperature_data);
+                temperature_text.setText(getResources().getString(R.string.temperature_data,temperature[temperature.length-1],"C"));
+            }
 
             TextView barometric_text = (TextView) view.findViewById(R.id.barometric_data);
             barometric_text.setText(getResources().getString(R.string.barometric_date,barometric[barometric.length-1]));

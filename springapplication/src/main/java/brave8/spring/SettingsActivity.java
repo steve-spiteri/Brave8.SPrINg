@@ -1,7 +1,9 @@
 package brave8.spring;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -21,6 +23,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Switch theme_switch = (Switch)findViewById(R.id.controls_application_theme);
         final TextView theme_text = (TextView)findViewById(R.id.text_theme_name);
         theme_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -81,10 +84,33 @@ public class SettingsActivity extends AppCompatActivity {
         switch (item.getItemId())
         {
             case R.id.home:
-                finish();
+                Intent stuff = getIntent();
+                Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                intent.putExtra("loginID", stuff.getIntExtra("loginId", 2));
+                startActivity(intent);
+                finishAffinity();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        Intent stuff = getIntent();
+        Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+        intent.putExtra("loginID", stuff.getIntExtra("loginId", 2));
+        startActivity(intent);
+        finishAffinity();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent stuff = getIntent();
+        Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+        intent.putExtra("loginID", stuff.getIntExtra("loginId", 2));
+        startActivity(intent);
+        finishAffinity();
     }
 
 }
