@@ -45,7 +45,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.Random;
-
+//test
 public class PageFragment extends Fragment implements OnItemSelectedListener {
 
     public static final String DATA_URL_FETCH_BY_LOGIN = "http://springdb.eu5.org//spring/fetch_data_by_login.php?id=";
