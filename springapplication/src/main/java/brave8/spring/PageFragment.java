@@ -51,6 +51,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
 
     public static final String DATA_URL_FETCH_BY_LOGIN = "http://springdb.eu5.org//spring/fetch_data_by_login.php?id=";
     public static final String DATA_URL_FETCH_LAST = "http://springdb.eu5.org//spring/get_last.php?id=";
+    public static final String DATA_URL_FETCH_COUNT = "http://springdb.eu5.org//spring/get_count.php?id=";
     private ProgressDialog loading;
 
     public static final String ARG_PAGE = "ARG_PAGE";
@@ -66,6 +67,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     Spinner spinner1;
     Spinner spinner2;
     GridLabelRenderer gridLabelRenderer;
+    TextView insufficient;
 
     int[] idData;
     double[] power;
@@ -75,11 +77,13 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     double[] humidity;
     String[] time;
     String[] date;
+    int rowCount;
 
     //constants
     private int ONE_DAY = 96;
     private int ONE_WEEK = 672;
     private int ONE_MONTH = 2688;
+    private int TWENTYFOUR_HOURS = 24;
     private int SEVEN_DAYS = 7;
     private int FOUR_WEEKS = 4;
 
@@ -90,11 +94,6 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     double[] fakelight;
     double[] fakebarometric;
     double[] fakehumidity;
-
-    int lastEntry = -1;
-    int lastEntryDB = -1;
-
-    int tst = 0;
 
     View view;
 
@@ -139,21 +138,30 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
 
         protected String getData(String userId) {
             String response;
-            HttpHandler httpHandler = new HttpHandler();
+            //HttpHandler httpHandler = new HttpHandler();
+            response = new HttpHandler().makeServiceCall(DATA_URL_FETCH_COUNT + userId);
+            try {
+                JSONObject all = new JSONObject(response);
+                JSONArray result = all.getJSONArray("result");
+                rowCount = result.getJSONObject(0).getInt("count");
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
             if(solarList == null) {
 
                 return new HttpHandler().makeServiceCall(DATA_URL_FETCH_BY_LOGIN + userId);
             }
-            response = httpHandler.makeServiceCall(DATA_URL_FETCH_LAST + userId);
+            response = new HttpHandler().makeServiceCall(DATA_URL_FETCH_LAST + userId);
             try {
                 JSONObject all = new JSONObject(response);
                 JSONArray result = all.getJSONArray("result");
                 JSONObject last = result.getJSONObject(0);
 
-                lastEntryDB = last.getInt("id_data");
-                lastEntry = idData[idData.length - 1];
+                int lastEntryDB = last.getInt("id_data");
+                int lastEntry = idData[idData.length - 1];
                 if (lastEntry != lastEntryDB) {
-                    return httpHandler.makeServiceCall(DATA_URL_FETCH_BY_LOGIN + userId);
+                    return new HttpHandler().makeServiceCall(DATA_URL_FETCH_BY_LOGIN + userId);
                 }
             }
             catch (JSONException e) {
@@ -203,6 +211,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
         }
 
         if (mPage == 1) {
+           //Toast.makeText(getActivity(),String.valueOf(Math.ceil(getMax(power,24))),Toast.LENGTH_LONG).show();
             //home activity
 
             //set date
@@ -271,6 +280,8 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             spinner2.setAdapter(adapter2);
 
             graph = (GraphView) view.findViewById(R.id.graph);
+            insufficient = (TextView) view.findViewById(R.id.insufficient);
+
 
             gridLabelRenderer = graph.getGridLabelRenderer();
             if (Build.VERSION.SDK_INT >= 23) {
@@ -292,46 +303,60 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        insufficient.setText("");
         if(spinner1.getSelectedItemPosition()==0){ //equals power
             graph.removeAllSeries(); //clear last graph
             //-------------------------------------------------------------------------------------------------------
             //POWER
             if(spinner2.getSelectedItemPosition() == 0) {
                 //real data
-                values = new DataPoint[24]; //Temporary (24 entries per day for now, will be 96)
-                for(int i = 0; i < values.length; i++) {
-                    values[i] = new DataPoint(i, power[i]);
+                if(rowCount>=TWENTYFOUR_HOURS) {
+                    values = new DataPoint[TWENTYFOUR_HOURS]; //Temporary (24 entries per day for now, will be 96)
+                    for (int i = 0; i < values.length; i++) {
+                        values[i] = new DataPoint(i, power[i]);
+                    }
+                    series = new LineGraphSeries<>(values); //add values to series
+                    graph.addSeries(series); //add series to graph
+                    graph.getViewport().setXAxisBoundsManual(true);
+                    graph.getViewport().setMaxX(TWENTYFOUR_HOURS); //so you can see last label
+                    graph.getViewport().setMaxY(Math.ceil(getMax(power, TWENTYFOUR_HOURS))); //so you can see last label
+                    gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.voltage)); //set vertical axis title
+                    gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.hour)); //set horizontal axis title
+                    gridLabelRenderer.setNumHorizontalLabels(TWENTYFOUR_HOURS / 2); //set number of horizontal labels
+                    graph.getGridLabelRenderer().reloadStyles(); //reload style
                 }
-                series = new LineGraphSeries<>(values); //add values to series
-                graph.addSeries(series); //add series to graph
-                graph.getViewport().setXAxisBoundsManual(true);
-                graph.getViewport().setMaxX(24); //so you can see last label
-                graph.getViewport().setMaxY(10); //so you can see last label
-                gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.voltage)); //set vertical axis title
-                gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.hour)); //set horizontal axis title
-                gridLabelRenderer.setNumHorizontalLabels(12); //set number of horizontal labels
-                graph.getGridLabelRenderer().reloadStyles(); //reload style
+                else{
+                    insufficient.setText("hello");
+                    insufficient.setText(View.VISIBLE);
+                }
             }
             else if(spinner2.getSelectedItemPosition()  == 1) {
                 //fake data
-                values = new DataPoint[SEVEN_DAYS]; //7 days
-                for (int i =0,k=fakepower.length-ONE_WEEK;i<values.length;i++,k+=ONE_DAY) //7 entries, k=end of array - (24*4)*7
-                {
-                    for(int x=0;x<ONE_DAY;x++) //combine 96 15 min entries for 1 day
+                //insufficient.setText("");
+                if(rowCount>=ONE_WEEK) {
+                    values = new DataPoint[SEVEN_DAYS]; //7 days
+                    for (int i = 0, k = fakepower.length - ONE_WEEK; i < values.length; i++, k += ONE_DAY) //7 entries, k=end of array - (24*4)*7
                     {
-                        num+=fakepower[k+x]; //add 96 entries into one variable
+                        for (int x = 0; x < ONE_DAY; x++) //combine 96 15 min entries for 1 day
+                        {
+                            num += fakepower[k + x]; //add 96 entries into one variable
+                        }
+                        values[i] = new DataPoint(i, num / ONE_DAY); //average the 96 numbers
+                        num = 0.0; //reset num so it can be used again
                     }
-                    values[i] = new DataPoint(i,num/ONE_DAY); //average the 96 numbers
-                    num=0.0; //reset num so it can be used again
+                    series = new LineGraphSeries<>(values);
+                    graph.addSeries(series);
+                    graph.getViewport().setXAxisBoundsManual(true);
+                    graph.getViewport().setMaxX(7); //so you can see last label
+                    gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.voltage)); //set vertical axis title
+                    gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.day)); //set horizontal axis title
+                    gridLabelRenderer.setNumHorizontalLabels(7);
+                    graph.getGridLabelRenderer().reloadStyles();
                 }
-                series = new LineGraphSeries<>(values);
-                graph.addSeries(series);
-                graph.getViewport().setXAxisBoundsManual(true);
-                graph.getViewport().setMaxX(7); //so you can see last label
-                gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.voltage)); //set vertical axis title
-                gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.day)); //set horizontal axis title
-                gridLabelRenderer.setNumHorizontalLabels(7);
-                graph.getGridLabelRenderer().reloadStyles();
+                else{
+                    insufficient.setText("hello");
+                    insufficient.setVisibility(View.VISIBLE);
+                }
             }
             else if(spinner2.getSelectedItemPosition()  == 2) {
                 //fake data
@@ -606,16 +631,29 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             }
             //-------------------------------------------------------------------------------------------------------
         }
+
+    }
+
+    private double getMax(double[] array,int values) {
+        double max = 0.0;
+        for (int x=(array.length-values);x<array.length;x++)
+        {
+            if (array[x]>max)
+            {
+                max = array[x];
+            }
+        }
+        return max;
     }
 
     public void onNothingSelected(AdapterView<?> parent)
     {}
 
-    /*@Override
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             new DownloadDataTask().execute("2");
         }
-    }*/
+    }
 }

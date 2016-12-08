@@ -4,7 +4,6 @@
 
 package brave8.spring;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -163,8 +162,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private class CheckLoginTask extends AsyncTask<String[], Void, Integer> {
-
-        ProgressDialog progressDialog = ProgressDialog.show(LoginActivity.this,"test","Test",false,false);
 
         @Override
         protected Integer doInBackground(String[]... string) {
