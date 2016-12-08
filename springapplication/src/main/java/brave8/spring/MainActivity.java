@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -17,10 +16,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
-    FragmentPagerAdapter adapterViewPager;
+    SampleFragmentPagerAdapter adapterViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
         final int PAGE_COUNT = 2;
-        private String tabTitles[] = new String[]{getString(R.string.home), getString(R.string.data)};
+        private String tabTitles[] = new String[] { getString(R.string.home), getString(R.string.data)};
         private Context context;
 
         public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
@@ -62,13 +60,11 @@ public class MainActivity extends AppCompatActivity {
 
             return PAGE_COUNT;
         }
-
         @Override
         public CharSequence getPageTitle(int position) {
 
             return tabTitles[position];
         }
-
         @Override
         public Fragment getItem(int position) {
 
@@ -105,11 +101,19 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
         {
-            case R.id.settings:
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            case R.id.search:
+                Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == 1){
+
+        }
     }
 }
