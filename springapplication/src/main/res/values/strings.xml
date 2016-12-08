@@ -16,6 +16,9 @@
     <string name="user_empty_error">Username required.</string>
     <string name="pass_error">Password not recognized.</string>
     <string name="pass_empty_error">Password required.</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="internetError">No network connection detected. Try again later.</string>
+    <string name="databaseError">No database connection detected. Contact an administrator.</string>
 
     <!--home-->
     <string name="home">Home</string>

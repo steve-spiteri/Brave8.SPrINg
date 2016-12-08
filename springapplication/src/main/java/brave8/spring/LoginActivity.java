@@ -168,11 +168,11 @@ public class LoginActivity extends AppCompatActivity {
             }
             else if (result == -1)
             {
-                status.setText("no internet");///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                status.setText(getString(R.string.internetError));
             }
             else if (result == -2)
             {
-                status.setText("no database connection");//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                status.setText(getString(R.string.databaseError));
             }
 
         }
