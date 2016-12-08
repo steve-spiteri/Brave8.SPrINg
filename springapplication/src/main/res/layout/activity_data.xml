@@ -33,9 +33,26 @@
             android:textColor="@android:color/black"/>
     </LinearLayout>
 
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/graph"
-        android:layout_below="@+id/topPanel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/topPanel">
+
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/graph"
+            android:layout_below="@+id/topPanel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/insufficient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@android:color/holo_red_dark"
+            android:textStyle="bold"
+            android:textSize="@dimen/small"
+            android:gravity="center"
+            android:visibility="invisible"/>
+
+    </FrameLayout>
 </RelativeLayout>
