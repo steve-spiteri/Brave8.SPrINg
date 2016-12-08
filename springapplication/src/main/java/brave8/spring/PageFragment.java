@@ -177,7 +177,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             barometric_text.setText(getResources().getString(R.string.barometric_date, barometric[barometric.length - 1]));
 
             TextView light_text = (TextView) view.findViewById(R.id.light_data);
-            light_text.setText("Sunny"); //-------------------------------------------temp hard coded string
+            light_text.setText(getResources().getString(R.string.sunny)); //temp soft coded string
 
         } else {
 
