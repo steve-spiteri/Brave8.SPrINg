@@ -42,6 +42,7 @@
     <string name="light_date">%1$s</string>
 
     <!--data-->
+    <string name="insufficient">Insufficient Data</string>
     <string name="voltage">Power (kWh)</string>
     <string name="humidity">Humidity (%)</string>
     <string name="temperature_c">Degrees (C)</string>

@@ -47,7 +47,7 @@
         <TextView
             android:id="@+id/insufficient"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:textColor="@android:color/holo_red_dark"
             android:textStyle="bold"
             android:textSize="@dimen/small"

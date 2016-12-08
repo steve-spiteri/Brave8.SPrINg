@@ -319,20 +319,19 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                     graph.addSeries(series); //add series to graph
                     graph.getViewport().setXAxisBoundsManual(true);
                     graph.getViewport().setMaxX(TWENTYFOUR_HOURS); //so you can see last label
-                    graph.getViewport().setMaxY(Math.ceil(getMax(power, TWENTYFOUR_HOURS))); //so you can see last label
+                    graph.getViewport().setMaxY(Math.ceil(getMax(power, TWENTYFOUR_HOURS)));
                     gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.voltage)); //set vertical axis title
                     gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.hour)); //set horizontal axis title
                     gridLabelRenderer.setNumHorizontalLabels(TWENTYFOUR_HOURS / 2); //set number of horizontal labels
                     graph.getGridLabelRenderer().reloadStyles(); //reload style
                 }
                 else{
-                    insufficient.setText("hello");
+                    insufficient.setText(R.string.insufficient);
                     insufficient.setText(View.VISIBLE);
                 }
             }
             else if(spinner2.getSelectedItemPosition()  == 1) {
                 //fake data
-                //insufficient.setText("");
                 if(rowCount>=ONE_WEEK) {
                     values = new DataPoint[SEVEN_DAYS]; //7 days
                     for (int i = 0, k = fakepower.length - ONE_WEEK; i < values.length; i++, k += ONE_DAY) //7 entries, k=end of array - (24*4)*7
@@ -347,37 +346,44 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                     series = new LineGraphSeries<>(values);
                     graph.addSeries(series);
                     graph.getViewport().setXAxisBoundsManual(true);
-                    graph.getViewport().setMaxX(7); //so you can see last label
+                    graph.getViewport().setMaxX(SEVEN_DAYS); //so you can see last label
+                    graph.getViewport().setMaxY(Math.ceil(getMax(power, ONE_WEEK)));
                     gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.voltage)); //set vertical axis title
                     gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.day)); //set horizontal axis title
-                    gridLabelRenderer.setNumHorizontalLabels(7);
+                    gridLabelRenderer.setNumHorizontalLabels(SEVEN_DAYS);
                     graph.getGridLabelRenderer().reloadStyles();
                 }
                 else{
-                    insufficient.setText("hello");
+                    insufficient.setText(R.string.insufficient);
                     insufficient.setVisibility(View.VISIBLE);
                 }
             }
             else if(spinner2.getSelectedItemPosition()  == 2) {
                 //fake data
-                values = new DataPoint[FOUR_WEEKS]; //4 weeks
-                for (int i =0,k=fakepower.length-ONE_MONTH;i<values.length;i++,k+=ONE_WEEK) //4 entries, k=end of array = ((24*4)*7)*4
-                {
-                    for(int x=0;x<ONE_WEEK;x++) //combine 672 15 min entries int one vatiable
+                if(rowCount>=ONE_MONTH) {
+                    values = new DataPoint[FOUR_WEEKS]; //4 weeks
+                    for (int i = 0, k = fakepower.length - ONE_MONTH; i < values.length; i++, k += ONE_WEEK) //4 entries, k=end of array = ((24*4)*7)*4
                     {
-                        num+=fakepower[k+x]; //add 672 entries into one variable
+                        for (int x = 0; x < ONE_WEEK; x++) //combine 672 15 min entries int one vatiable
+                        {
+                            num += fakepower[k + x]; //add 672 entries into one variable
+                        }
+                        values[i] = new DataPoint(i, num / ONE_WEEK); //average the 672 numbers
+                        num = 0.0; //reset num so it can be used again
                     }
-                    values[i] = new DataPoint(i,num/ONE_WEEK); //average the 672 numbers
-                    num=0.0; //reset num so it can be used again
+                    series = new LineGraphSeries<>(values);
+                    graph.addSeries(series);
+                    graph.getViewport().setXAxisBoundsManual(true);
+                    graph.getViewport().setMaxX(FOUR_WEEKS); //so you can see last label
+                    gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.voltage)); //set vertical axis title
+                    gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.week)); //set horizontal axis title
+                    gridLabelRenderer.setNumHorizontalLabels(FOUR_WEEKS);
+                    graph.getGridLabelRenderer().reloadStyles();
                 }
-                series = new LineGraphSeries<>(values);
-                graph.addSeries(series);
-                graph.getViewport().setXAxisBoundsManual(true);
-                graph.getViewport().setMaxX(4); //so you can see last label
-                gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.voltage)); //set vertical axis title
-                gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.week)); //set horizontal axis title
-                gridLabelRenderer.setNumHorizontalLabels(4);
-                graph.getGridLabelRenderer().reloadStyles();
+                else{
+                    insufficient.setText(R.string.insufficient);
+                    insufficient.setVisibility(View.VISIBLE);
+                }
             }
         }
         //-------------------------------------------------------------------------------------------------------
