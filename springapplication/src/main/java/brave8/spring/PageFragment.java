@@ -2,6 +2,7 @@ package brave8.spring;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,13 +32,23 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.Random;
 
 public class PageFragment extends Fragment implements OnItemSelectedListener {
 
-    public static final String DATA_URL_FETCH_BY_LOGIN = " http://c1f13104.ngrok.io/spring/fetch_data_by_login.php?id=2";
+    public static final String DATA_URL_FETCH_BY_LOGIN = "http://springdb.eu5.org//spring/fetch_data_by_login.php?id=";
     private ProgressDialog loading;
 
     public static final String ARG_PAGE = "ARG_PAGE";
@@ -77,6 +88,8 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     double[] fakebarometric;
     double[] fakehumidity;
 
+    View view;
+
     public static PageFragment create(int page) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
@@ -84,6 +97,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,7 +108,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view;
+        //View view;
         if(mPage == 1) {
             view = inflater.inflate(R.layout.activity_home, container, false);
         }
@@ -104,9 +118,53 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
         else {
             view = inflater.inflate(R.layout.activity_settings, container, false);
         }
-        setData(view);
+        //setData(view);
+        new DownloadDataTask().execute("2");
         return view;
     }
+
+    private class DownloadDataTask extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... userId) {
+            return getData(userId[0]);
+        }
+
+        protected String getData(String userId) {
+            try {
+                URL url = new URL(DATA_URL_FETCH_BY_LOGIN + userId);
+                URLConnection conn = url.openConnection();
+                if (!(conn instanceof HttpURLConnection))
+                    throw new IOException("string");
+
+                HttpURLConnection httpConn = (HttpURLConnection) conn;
+                httpConn.setRequestMethod("GET");
+                httpConn.connect();
+
+                InputStream input = httpConn.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                StringBuilder sb = new StringBuilder();
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                        sb.append(line).append('\n');
+                }
+                input.close();
+
+                String response = sb.toString();
+                return response;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return "No Results.";
+        }
+
+        protected void onPostExecute(String result) {
+            displayData(result);
+        }
+    }
+
 
     public void setData(final View view) {
 
@@ -118,7 +176,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             @Override
             public void onResponse(String response) {
                 loading.dismiss();
-                displayData(view, response);
+                displayData(response);
             }
         },
                 new Response.ErrorListener() {
@@ -132,7 +190,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
         requestQueue.add(stringRequest);
     }
 
-    public void displayData(View view, String response) {
+    public void displayData(String response) {
         SolarDataSource solarDataSource = new SolarDataSource(getContext());
         try {
             solarList = solarDataSource.createSolarList(response);
@@ -245,6 +303,8 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             spinner2.setOnItemSelectedListener(this);
         }
     }
+
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         if(spinner1.getSelectedItemPosition()==0){ //equals power
@@ -564,4 +624,6 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
 
     public void onNothingSelected(AdapterView<?> parent)
     {}
+
+
 }
