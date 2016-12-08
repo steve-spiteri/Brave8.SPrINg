@@ -4,6 +4,7 @@
 
 package brave8.spring;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -25,7 +26,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-//
+
 public class LoginActivity extends AppCompatActivity {
 
     Button signIn;
@@ -162,6 +163,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private class CheckLoginTask extends AsyncTask<String[], Void, Integer> {
+
+        ProgressDialog progressDialog = ProgressDialog.show(LoginActivity.this,"test","Test",false,false);
+
         @Override
         protected Integer doInBackground(String[]... string) {
             HttpHandler sh = new HttpHandler();
@@ -206,7 +210,6 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("password", dbPass.getText().toString());
                     editor.apply();
                 }
-
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra("loginID", result);
                     startActivity(intent);

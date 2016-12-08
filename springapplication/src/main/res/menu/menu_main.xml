@@ -5,7 +5,7 @@
         style="@style/AppTheme"
         android:id="@+id/settings"
         android:title="@string/action_settings"
-        android:icon="@android:drawable/ic_menu_preferences"
+        android:icon="@drawable/ic_gear_option"
         app:showAsAction="always"
         android:orderInCategory="1"></item>
 
