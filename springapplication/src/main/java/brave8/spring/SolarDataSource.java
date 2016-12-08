@@ -42,6 +42,7 @@ public class SolarDataSource {
 
     private Solar jsonToSolar(JSONObject jsonObject) throws JSONException {
         Solar solar = new Solar();
+        solar.setIdData(jsonObject.getInt(KEY_ID_DATA));
         solar.setIdLogin(jsonObject.getInt(KEY_ID_LOGIN));
         solar.setPower(jsonObject.getDouble(KEY_POWER));
         solar.setTemperature(jsonObject.getDouble(KEY_TEMPERATURE));

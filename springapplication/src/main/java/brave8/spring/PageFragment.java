@@ -31,6 +31,7 @@ import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,6 +50,7 @@ import java.util.Random;
 public class PageFragment extends Fragment implements OnItemSelectedListener {
 
     public static final String DATA_URL_FETCH_BY_LOGIN = "http://springdb.eu5.org//spring/fetch_data_by_login.php?id=";
+    public static final String DATA_URL_FETCH_LAST = "http://springdb.eu5.org//spring/get_last.php?id=";
     private ProgressDialog loading;
 
     public static final String ARG_PAGE = "ARG_PAGE";
@@ -59,12 +61,13 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     GraphView graph;
     LineGraphSeries<DataPoint> series;
     DataPoint[] values;
-    double num =0.0;
-    List<Solar> solarList;
+    double num = 0.0;
+    List<Solar> solarList = null;
     Spinner spinner1;
     Spinner spinner2;
     GridLabelRenderer gridLabelRenderer;
 
+    int[] idData;
     double[] power;
     double[] temperature;
     double[] light;
@@ -87,6 +90,11 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     double[] fakelight;
     double[] fakebarometric;
     double[] fakehumidity;
+
+    int lastEntry = -1;
+    int lastEntryDB = -1;
+
+    int tst = 0;
 
     View view;
 
@@ -118,7 +126,6 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
         else {
             view = inflater.inflate(R.layout.activity_settings, container, false);
         }
-        //setData(view);
         new DownloadDataTask().execute("2");
         return view;
     }
@@ -131,90 +138,68 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
         }
 
         protected String getData(String userId) {
+            String response;
+            HttpHandler httpHandler = new HttpHandler();
+            if(solarList == null) {
+
+                return new HttpHandler().makeServiceCall(DATA_URL_FETCH_BY_LOGIN + userId);
+            }
+            response = httpHandler.makeServiceCall(DATA_URL_FETCH_LAST + userId);
             try {
-                URL url = new URL(DATA_URL_FETCH_BY_LOGIN + userId);
-                URLConnection conn = url.openConnection();
-                if (!(conn instanceof HttpURLConnection))
-                    throw new IOException("string");
+                JSONObject all = new JSONObject(response);
+                JSONArray result = all.getJSONArray("result");
+                JSONObject last = result.getJSONObject(0);
 
-                HttpURLConnection httpConn = (HttpURLConnection) conn;
-                httpConn.setRequestMethod("GET");
-                httpConn.connect();
-
-                InputStream input = httpConn.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-                StringBuilder sb = new StringBuilder();
-                String line;
-
-                while ((line = reader.readLine()) != null) {
-                        sb.append(line).append('\n');
+                lastEntryDB = last.getInt("id_data");
+                lastEntry = idData[idData.length - 1];
+                if (lastEntry != lastEntryDB) {
+                    return httpHandler.makeServiceCall(DATA_URL_FETCH_BY_LOGIN + userId);
                 }
-                input.close();
-
-                String response = sb.toString();
-                return response;
-
-            } catch (IOException e) {
+            }
+            catch (JSONException e) {
                 e.printStackTrace();
             }
-            return "No Results.";
+            return String.valueOf(-1);
         }
 
         protected void onPostExecute(String result) {
-            displayData(result);
+            if(result.equals(String.valueOf(-1))) {
+                displayData(result, false);
+            }
+            else {
+                displayData(result, true);
+            }
         }
     }
 
-
-    public void setData(final View view) {
-
-        loading = ProgressDialog.show(getContext(),"Please wait...","Fetching...",false,false);
-
-        String url = DATA_URL_FETCH_BY_LOGIN;
-
-        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                loading.dismiss();
-                displayData(response);
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(),error.getMessage(),Toast.LENGTH_LONG).show();
-                    }
-                });
-
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        requestQueue.add(stringRequest);
-    }
-
-    public void displayData(String response) {
+    public void displayData(String response, boolean newData) {
         SolarDataSource solarDataSource = new SolarDataSource(getContext());
-        try {
-            solarList = solarDataSource.createSolarList(response);
-            power = new double[solarList.size()];
-            temperature = new double[solarList.size()];
-            light = new double[solarList.size()];
-            barometric = new double[solarList.size()];
-            humidity = new double[solarList.size()];
-            time = new String[solarList.size()];
-            date = new String[solarList.size()];
+        if(newData) {
+            try {
+                solarList = solarDataSource.createSolarList(response);
+                idData = new int[solarList.size()];
+                power = new double[solarList.size()];
+                temperature = new double[solarList.size()];
+                light = new double[solarList.size()];
+                barometric = new double[solarList.size()];
+                humidity = new double[solarList.size()];
+                time = new String[solarList.size()];
+                date = new String[solarList.size()];
 
-            for (int i = 0; i < solarList.size(); i++)
-            {
-                power[i] = solarList.get(i).getPower();
-                temperature[i] = solarList.get(i).getTemperature();
-                light[i] = solarList.get(i).getLight();
-                barometric[i] = solarList.get(i).getBarometric();
-                humidity[i] = solarList.get(i).getHumidity();
-                time[i] = solarList.get(i).getTime();
-                date[i] = solarList.get(i).getDate();
+                for (int i = 0; i < solarList.size(); i++) {
+                    idData[i] = solarList.get(i).getIdData();
+                    power[i] = solarList.get(i).getPower();
+                    temperature[i] = solarList.get(i).getTemperature();
+                    light[i] = solarList.get(i).getLight();
+                    barometric[i] = solarList.get(i).getBarometric();
+                    humidity[i] = solarList.get(i).getHumidity();
+                    time[i] = solarList.get(i).getTime();
+                    date[i] = solarList.get(i).getDate();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
 
         if (mPage == 1) {
@@ -625,5 +610,11 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     public void onNothingSelected(AdapterView<?> parent)
     {}
 
-
+    /*@Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            new DownloadDataTask().execute("2");
+        }
+    }*/
 }
