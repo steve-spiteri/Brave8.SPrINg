@@ -37,6 +37,8 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
         editor.putString("username", "user");
         editor.putString("password", "password");
+        //default temperature setting
+        editor.putString("temperature", "celsius");
         editor.apply();
 
         signIn = (Button) findViewById(R.id.sign_in);

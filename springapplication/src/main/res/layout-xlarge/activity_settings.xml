@@ -107,5 +107,11 @@
                 android:text="@string/celsius"
                 style="@style/information_text"/>
         </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Logout"
+            android:id="@+id/button_logout"/>
     </LinearLayout>
 </ScrollView>

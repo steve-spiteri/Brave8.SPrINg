@@ -72,6 +72,7 @@
     <string name="change_temperature_measurement">Change Temperature Measurement</string>
     <string name="celsius">Celsius</string>
     <string name="fahrenheit">Fahrenheit</string>
+    <string name="logout">Logout</string>
 
     <!-- menu text -->
     <string name="action_preferences">Preferences</string>
