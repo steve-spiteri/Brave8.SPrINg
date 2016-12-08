@@ -11,16 +11,12 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputType;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,11 +56,6 @@ public class LoginActivity extends AppCompatActivity {
             {
                 dbUser = (EditText) findViewById(R.id.username);
                 dbPass = (EditText) findViewById(R.id.password);
-                //hello class
-                //----------------------------
-                //dbUser.setText("id");
-                //dbPass.setText("spring");
-                //----------------------------
 
                 String dbUserStr = dbUser.getText().toString();
                 String dbPassStr = dbPass.getText().toString();
@@ -74,26 +65,12 @@ public class LoginActivity extends AppCompatActivity {
                     dbUser.setError(getString(R.string.user_empty_error));
                     loginError = true;
                 }
-//                else if(restoredUser!=null&&!restoredUser.equals(dbUserStr)){
-//                    dbUser.setError(getString(R.string.user_error));
-//                    loginError = true;
-//                }
 
                 if(dbPassStr.equals("")){
                     dbPass.setError(getString(R.string.pass_empty_error));
                     loginError = true;
                 }
 
-//                if(restoredUser.equals(dbUserStr)){
-//                    if(dbPassStr.equals("")){
-//                        dbPass.setError(getString(R.string.pass_empty_error));
-//                        loginError = true;
-//                    }
-//                    else if(!restoredPass.equals(dbPassStr)){
-//                        dbPass.setError(getString(R.string.pass_error));
-//                        loginError = true;
-//                    }
-//                }
                 if(!loginError){
                     userInfo = new String[] {dbUser.getText().toString(),dbPass.getText().toString()};
                     new CheckLoginTask().execute(userInfo);
@@ -235,7 +212,6 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
             }
-            //Toast.makeText(LoginActivity.this,result,Toast.LENGTH_LONG).show();
         }
     }
 }
