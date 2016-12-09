@@ -1,5 +1,8 @@
-package brave8.spring;
+/**
+ * Brave 8, Project SPrINg
+ */
 
+package brave8.spring;
 
 import android.content.Context;
 
@@ -23,11 +26,10 @@ public class SolarDataSource {
     public static final String KEY_DATE = "date";
     public static final String JSON_ARRAY = "result";
 
-    Context context;
 
-    public SolarDataSource(Context context) {
-        this.context = context;
-    }
+//    public SolarDataSource() {
+//        this.context = context;
+//    }
 
     public List<Solar> createSolarList(String jsonData) throws JSONException {
         List<Solar> solarList = new ArrayList<Solar>();

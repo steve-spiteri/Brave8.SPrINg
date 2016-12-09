@@ -1,5 +1,5 @@
 /**
- * Brave 8
+ * Brave 8, Project SPrINg
  */
 
 package brave8.spring;
@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     CheckBox rememberMe;
 
     public static final String MY_PREFS_NAME = "AppUsers";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

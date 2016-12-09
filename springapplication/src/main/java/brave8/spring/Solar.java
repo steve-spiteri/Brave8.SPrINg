@@ -1,10 +1,8 @@
-package brave8.spring;
-
-import java.sql.Date;
-
 /**
- * Created by Ricky on 2016-11-11.
+ * Brave 8, Project SPrINg
  */
+
+package brave8.spring;
 
 public class Solar {
     int idData;
@@ -23,10 +21,6 @@ public class Solar {
 
     public void setIdData(int idData) {
         this.idData = idData;
-    }
-
-    public int getIdLogin() {
-        return idLogin;
     }
 
     public void setIdLogin(int idLogin) {
