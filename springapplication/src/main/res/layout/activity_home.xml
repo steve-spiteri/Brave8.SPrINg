@@ -30,7 +30,6 @@
                 android:textStyle="bold"
                 android:textSize="@dimen/small"
                 android:gravity="center" />
-
         </LinearLayout>
 
         <LinearLayout

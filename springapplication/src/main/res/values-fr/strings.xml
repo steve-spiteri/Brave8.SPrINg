@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SpringApplication</string>
+    <string name="app_name">Spring Application</string>
 
     <!--dialog-->
     <string name="back_pressed_title">Demande de clôture</string>
@@ -16,6 +16,10 @@
     <string name="user_empty_error">Nom d\'utilisateur (requis.</string>
     <string name="pass_error">Mot de passe non reconnu.</string>
     <string name="pass_empty_error">Mot de passe requis.</string>
+    <string name="remember_me">Souviens-toi de moi</string>
+    <string name="internetError">Aucune connexion réseau détectée. Réessayez plus tard.</string>
+    <string name="databaseError">Aucune connexion à la base de données détectée. Contactez un administrateur.</string>
+    <string name="userPassError">Nom d\'utilisateur / Mot de passe Incorrect!</string>
 
     <!--home-->
     <string name="home">Accueil</string>
@@ -38,6 +42,18 @@
     <string name="light_date">%1$s</string>
 
     <!--data-->
+    <string name="insufficient">Données insuffisantes</string>
+    <string name="voltage">Puissance (kWh)</string>
+    <string name="humidity">Humidité (%)</string>
+    <string name="temperature_c">Degrés (C)</string>
+    <string name="temperature_f">Degrés (F)</string>
+    <string name="barometric">Barométrique (kPa)</string>
+    <string name="light">Lux</string>
+
+    <string name="hour">Heure</string>
+    <string name="day">Journée</string>
+    <string name="week">Semaine</string>
+
     <string-array name="source_array">
         <item>Puissance</item>
         <item>Humidité</item>

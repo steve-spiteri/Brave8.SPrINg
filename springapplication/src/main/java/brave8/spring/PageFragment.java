@@ -156,11 +156,21 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
         }
 
         protected void onPostExecute(String result) {
-            if(result.equals(String.valueOf(-1))) {
-                displayData(result, false);
+            //this is for the case where we flip the phone too fast between portrait and landscape
+            //this would cause a crash because the async task is still doing stuff while we flip and it crashes
+            try {
+                if (result.equals(String.valueOf(-1))) {
+                    displayData(result, false);
+                } else {
+                    displayData(result, true);
+                }
             }
-            else {
-                displayData(result, true);
+            catch(Exception e)
+            {
+                cancel(true);
+                if(isCancelled()){
+                    return;
+                }
             }
         }
     }

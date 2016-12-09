@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/blue_button"
             android:layout_gravity="center_horizontal"
-            android:text="Logout"
+            android:text="@string/logout"
             android:textStyle="bold"
             android:id="@+id/button_logout"/>
     </LinearLayout>
