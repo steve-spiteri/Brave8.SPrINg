@@ -170,7 +170,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     }
 
     public void displayData(String response, boolean newData) {
-        SolarDataSource solarDataSource = new SolarDataSource(getContext());
+        SolarDataSource solarDataSource = new SolarDataSource();
         if(newData) {
             try {
                 solarList = solarDataSource.createSolarList(response);
@@ -758,7 +758,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
 
     }
 
-    private double getMax(double[] array,int values) {
+    public double getMax(double[] array,int values) {
         double max = 0.0;
         for (int x=(array.length-values);x<array.length;x++)
         {
