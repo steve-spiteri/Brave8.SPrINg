@@ -42,13 +42,26 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        new CheckStatusTask().execute();
-
         //if device is xlarge(tablet) make the orientation always landscape
         int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
         if(screenSize == Configuration.SCREENLAYOUT_SIZE_XLARGE){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
+
+        if(screenSize == Configuration.SCREENLAYOUT_SIZE_XLARGE){
+            status_layout = (LinearLayout) findViewById(R.id.status_layout);
+            login_layout = (LinearLayout) findViewById(R.id.login_layout);
+            status_layout.setVisibility(View.GONE);
+            login_layout.setVisibility(View.VISIBLE);
+            dbUser = (EditText) findViewById(R.id.username);
+            dbPass = (EditText) findViewById(R.id.password);
+            new CheckStatusTask().execute();
+        }
+        else
+        {
+            new CheckStatusTask().execute();
+        }
+
 
         signIn = (Button) findViewById(R.id.sign_in);
         signIn.setOnClickListener(new View.OnClickListener() {
@@ -133,31 +146,25 @@ public class LoginActivity extends AppCompatActivity {
             status_layout = (LinearLayout) findViewById(R.id.status_layout);
             login_layout = (LinearLayout) findViewById(R.id.login_layout);
             status = (TextView) findViewById(R.id.status);
-            if (result == 1)
-            {
-                SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-                String restoredUser = prefs.getString("username", null);
-                String restoredPass = prefs.getString("password", null);
 
-                if(restoredUser!=null&restoredPass!=null)
-                {
-                    userInfo = new String[]{restoredUser, restoredPass};
-                    new CheckLoginTask().execute(userInfo);
+                if (result == 1) {
+                    SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+                    String restoredUser = prefs.getString("username", null);
+                    String restoredPass = prefs.getString("password", null);
+
+                    if (restoredUser != null & restoredPass != null) {
+                        userInfo = new String[]{restoredUser, restoredPass};
+                        new CheckLoginTask().execute(userInfo);
+                    } else {
+                        status_layout.setVisibility(View.GONE);
+                        login_layout.setVisibility(View.VISIBLE);
+                    }
+                } else if (result == -1) {
+                    status.setText(getString(R.string.internetError));
+                } else if (result == -2) {
+                    status.setText(getString(R.string.databaseError));
                 }
-                else
-                {
-                    status_layout.setVisibility(View.GONE);
-                    login_layout.setVisibility(View.VISIBLE);
-                }
-            }
-            else if (result == -1)
-            {
-                status.setText(getString(R.string.internetError));
-            }
-            else if (result == -2)
-            {
-                status.setText(getString(R.string.databaseError));
-            }
+
 
         }
     }
@@ -193,26 +200,24 @@ public class LoginActivity extends AppCompatActivity {
             incorrect = (TextView) findViewById(R.id.incorrect);
             rememberMe = (CheckBox) findViewById(R.id.rememberMe_checkBox);
 
-            if (result==-1)
-            {
-                incorrect.setText(R.string.userPassError);
-                dbUser.setText("");
-                dbPass.setText("");
-            }
-            else
-            {
-                if (rememberMe.isChecked())
-                {
-                    SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                    editor.putString("username", dbUser.getText().toString());
-                    editor.putString("password", dbPass.getText().toString());
-                    editor.apply();
-                }
+
+                if (result == -1) {
+                    incorrect.setText(R.string.userPassError);
+                    dbUser.setText("");
+                    dbPass.setText("");
+                } else {
+                    if (rememberMe.isChecked()) {
+                        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                        editor.putString("username", dbUser.getText().toString());
+                        editor.putString("password", dbPass.getText().toString());
+                        editor.apply();
+                    }
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra("loginID", result);
                     startActivity(intent);
                     finish();
-            }
+                }
+
         }
     }
 }
