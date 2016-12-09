@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -46,8 +47,10 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     List<Solar> solarList = null;
     Spinner spinner1, spinner2;
     GridLabelRenderer gridLabelRenderer;
-    TextView insufficient;
+    TextView insufficient, noData;
     SharedPreferences settings;
+    LinearLayout status_layout;
+    LinearLayout main_layout;
     int idLogin;
 
     int[] idData;
@@ -104,6 +107,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                 view = inflater.inflate(R.layout.activity_settings, container, false);
             }
 
+            insufficient = (TextView) view.findViewById(R.id.insufficient);
             idLogin = getActivity().getIntent().getIntExtra("loginID", 0);
             new DownloadDataTask().execute(String.valueOf(idLogin));
         }
@@ -132,20 +136,21 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
 
                 return new HttpHandler().makeServiceCall(DATA_URL_FETCH_BY_LOGIN + userId);
             }
-            response = new HttpHandler().makeServiceCall(DATA_URL_FETCH_LAST + userId);
-            try {
-                JSONObject all = new JSONObject(response);
-                JSONArray result = all.getJSONArray("result");
-                JSONObject last = result.getJSONObject(0);
+            if(rowCount > 0) {
+                response = new HttpHandler().makeServiceCall(DATA_URL_FETCH_LAST + userId);
+                try {
+                    JSONObject all = new JSONObject(response);
+                    JSONArray result = all.getJSONArray("result");
+                    JSONObject last = result.getJSONObject(0);
 
-                int lastEntryDB = last.getInt("id_data");
-                int lastEntry = idData[idData.length - 1];
-                if (lastEntry != lastEntryDB) {
-                    return new HttpHandler().makeServiceCall(DATA_URL_FETCH_BY_LOGIN + userId);
+                    int lastEntryDB = last.getInt("id_data");
+                    int lastEntry = idData[idData.length - 1];
+                    if (lastEntry != lastEntryDB) {
+                        return new HttpHandler().makeServiceCall(DATA_URL_FETCH_BY_LOGIN + userId);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            }
-            catch (JSONException e) {
-                e.printStackTrace();
             }
             return String.valueOf(-1);
         }
@@ -193,37 +198,45 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
         if (mPage == 1) {
             //home activity
 
-            //set date
-            TextView date_text = (TextView) view.findViewById(R.id.date_text);
-            date_text.setText(date[date.length-1]);
+            status_layout = (LinearLayout) view.findViewById(R.id.status_layout);
+            main_layout = (LinearLayout) view.findViewById(R.id.main_layout);
 
-            //set time
-            TextView time_text = (TextView) view.findViewById(R.id.time_text);
-            time_text.setText(time[time.length-1]);
-
-            TextView power_data = (TextView) view.findViewById(R.id.power_data);
-            power_data.setText(getResources().getString(R.string.power_data,power[power.length-1]));
-
-            TextView humidity_text = (TextView) view.findViewById(R.id.humidity_data);
-            humidity_text.setText(getResources().getString(R.string.humidity_data,humidity[humidity.length-1]));
-
-            if(settings.getString("temperature", "").equals("fahrenheit"))
+            if(rowCount==0)
             {
-                TextView temperature_text = (TextView) view.findViewById(R.id.temperature_data);
-                temperature_text.setText(getResources().getString(R.string.temperature_data,(temperature[temperature.length-1] * 1.8) + 32,"F"));
+                noData = (TextView) view.findViewById(R.id.noData);
+                noData.setText(R.string.insufficient);
             }
-            else
-            {
-                TextView temperature_text = (TextView) view.findViewById(R.id.temperature_data);
-                temperature_text.setText(getResources().getString(R.string.temperature_data,temperature[temperature.length-1],"C"));
+            else {
+                status_layout.setVisibility(View.GONE);
+                main_layout.setVisibility(View.VISIBLE);
+                //set date
+                TextView date_text = (TextView) view.findViewById(R.id.date_text);
+                date_text.setText(date[date.length - 1]);
+
+                //set time
+                TextView time_text = (TextView) view.findViewById(R.id.time_text);
+                time_text.setText(time[time.length - 1]);
+
+                TextView power_data = (TextView) view.findViewById(R.id.power_data);
+                power_data.setText(getResources().getString(R.string.power_data, power[power.length - 1]));
+
+                TextView humidity_text = (TextView) view.findViewById(R.id.humidity_data);
+                humidity_text.setText(getResources().getString(R.string.humidity_data, humidity[humidity.length - 1]));
+
+                if (settings.getString("temperature", "").equals("fahrenheit")) {
+                    TextView temperature_text = (TextView) view.findViewById(R.id.temperature_data);
+                    temperature_text.setText(getResources().getString(R.string.temperature_data, (temperature[temperature.length - 1] * 1.8) + 32, "F"));
+                } else {
+                    TextView temperature_text = (TextView) view.findViewById(R.id.temperature_data);
+                    temperature_text.setText(getResources().getString(R.string.temperature_data, temperature[temperature.length - 1], "C"));
+                }
+
+                TextView barometric_text = (TextView) view.findViewById(R.id.barometric_data);
+                barometric_text.setText(getResources().getString(R.string.barometric_date, barometric[barometric.length - 1]));
+
+                TextView light_text = (TextView) view.findViewById(R.id.light_data);
+                light_text.setText("Sunny"); //-------------------------------------------temp hard coded string
             }
-
-            TextView barometric_text = (TextView) view.findViewById(R.id.barometric_data);
-            barometric_text.setText(getResources().getString(R.string.barometric_date,barometric[barometric.length-1]));
-
-            TextView light_text = (TextView) view.findViewById(R.id.light_data);
-            light_text.setText("Sunny"); //-------------------------------------------temp hard coded string
-
         }
         else{
 
@@ -269,7 +282,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             //settings = getActivity().getSharedPreferences(LoginActivity.MY_PREFS_NAME, Context.MODE_PRIVATE);
 
             graph = (GraphView) view.findViewById(R.id.graph);
-            insufficient = (TextView) view.findViewById(R.id.insufficient);
+
 
 
             gridLabelRenderer = graph.getGridLabelRenderer();
@@ -316,7 +329,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                 }
                 else{
                     insufficient.setText(R.string.insufficient);
-                    insufficient.setText(View.VISIBLE);
+                    insufficient.setVisibility(View.VISIBLE);
                 }
             }
             else if(spinner2.getSelectedItemPosition()  == 1) {
