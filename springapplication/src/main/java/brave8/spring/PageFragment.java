@@ -221,7 +221,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             if(rowCount==0)
             {
                 insufficient = (TextView) view.findViewById(R.id.insufficient);
-                insufficient.setText("test");
+                insufficient.setText(R.string.insufficient);
             }
             else {
                 status_layout.setVisibility(View.GONE);
