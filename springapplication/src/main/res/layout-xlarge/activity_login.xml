@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:background="@color/white"
+    android:background="@android:color/white"
     tools:context=".LoginActivity">
 
     <!--logo-->
@@ -34,7 +34,7 @@
             android:id="@+id/login_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/large"
             android:text="@string/login"/>
 
@@ -42,7 +42,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/black">
+            android:background="@android:color/black">
         </View>
 
         <!--username-->
@@ -50,21 +50,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/activity_vertical_margin"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/small"
             android:text="@string/username"/>
         <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="@dimen/large"
-            android:background="@color/grey"/>
+            android:background="@android:color/darker_gray"/>
 
         <!--password-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/activity_vertical_margin"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/small"
             android:text="@string/password"/>
         <EditText
@@ -72,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/large"
             android:inputType="textPassword"
-            android:background="@color/grey"/>
+            android:background="@android:color/darker_gray"/>
 
         <!--divider-->
         <View
@@ -82,7 +82,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/black">
+            android:background="@android:color/black">
         </View>
 
         <!--sign in-->

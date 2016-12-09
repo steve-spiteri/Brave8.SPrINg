@@ -6,7 +6,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/white">
+    android:background="@android:color/white">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,7 +28,7 @@
                 android:id="@+id/divider_about_application"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/black" />
+                android:background="@android:color/black" />
             <ImageView
                 android:id="@+id/logo"
                 android:layout_width="wrap_content"
@@ -38,37 +39,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/app_information" />
-        </LinearLayout>
-
-        <!--divider-->
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/activity_vertical_margin"/>
-
-        <!--application theme-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/blue_border"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/text_application_theme"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/application_theme" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@color/black" />
-            <Switch
-                android:id="@+id/controls_application_theme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/text_theme_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/light_theme" />
         </LinearLayout>
 
         <!--divider-->
@@ -90,7 +60,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/black" />
+                android:background="@android:color/black" />
             <Switch
                 android:id="@+id/controls_change_temperature"
                 android:layout_width="wrap_content"
@@ -104,11 +74,20 @@
                 android:text="@string/celsius"
                 android:layout_toRightOf="@id/controls_change_temperature"/>
         </LinearLayout>
+
+        <!--divider-->
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/activity_vertical_margin"/>
+
+        <!--logout-->
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/blue_button"
             android:layout_gravity="center_horizontal"
             android:text="Logout"
+            android:textStyle="bold"
             android:id="@+id/button_logout"/>
     </LinearLayout>
 </ScrollView>

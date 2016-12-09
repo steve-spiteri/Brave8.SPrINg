@@ -95,7 +95,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/humidity_text"
                         android:text="@string/humidity_text"
-                        android:textColor="@color/black"/>
+                        android:textColor="@android:color/black"/>
                 </LinearLayout>
             </LinearLayout>
 
