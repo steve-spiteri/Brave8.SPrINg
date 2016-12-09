@@ -1,6 +1,9 @@
+/**
+ * Brave 8, Project SPrINg
+ */
+
 package brave8.spring;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -18,7 +21,6 @@ import android.view.MenuItem;
 
 
 public class MainActivity extends AppCompatActivity {
-    SampleFragmentPagerAdapter adapterViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,26 +35,22 @@ public class MainActivity extends AppCompatActivity {
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(),
-                MainActivity.this));
+        viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager()));
 
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_home_icon_silhouette);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_cube);
-        //tabLayout.getTabAt(2).setIcon(R.drawable.ic_gear_option);
     }
 
 
     public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
         final int PAGE_COUNT = 2;
         private String tabTitles[] = new String[] { getString(R.string.home), getString(R.string.data)};
-        private Context context;
 
-        public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
+        public SampleFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
-            this.context = context;
         }
 
         @Override
@@ -102,9 +100,8 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId())
         {
             case R.id.settings:
-                Intent stuff = getIntent();
                 Intent intent = new Intent(this, SettingsActivity.class);
-                intent.putExtra("loginID", stuff.getIntExtra("loginId", 2));
+                intent.putExtra("loginID", getIntent().getIntExtra("loginID", 0));
                 startActivity(intent);
                 break;
         }
