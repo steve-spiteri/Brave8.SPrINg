@@ -20,8 +20,8 @@
         <!--logo-->
         <ImageView
             android:id="@+id/logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/login_pic_width"
+            android:layout_height="@dimen/login_pic_length"
             android:src="@drawable/ic_logo" />
 
         <LinearLayout

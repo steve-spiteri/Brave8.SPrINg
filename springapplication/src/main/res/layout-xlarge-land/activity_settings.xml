@@ -22,8 +22,7 @@
                 android:id="@+id/text_about_application"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/about_application"
-                android:textStyle="bold"/>
+                android:text="@string/about_application" />
             <View
                 android:id="@+id/divider_about_application"
                 android:layout_width="match_parent"
@@ -31,15 +30,14 @@
                 android:background="@android:color/black" />
             <ImageView
                 android:id="@+id/logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/about_app_pic_width"
+                android:layout_height="@dimen/about_app_pic_height"
                 android:src="@drawable/ic_logo_small" />
             <TextView
                 android:id="@+id/text_information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/app_information"
-                android:textStyle="bold"/>
+                android:text="@string/app_information" />
         </LinearLayout>
 
         <!--divider-->
@@ -62,8 +60,7 @@
                 android:id="@+id/text_change_temperature"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/change_temperature_measurement"
-                android:textStyle="bold"/>
+                android:text="@string/change_temperature_measurement" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
@@ -76,8 +73,7 @@
                 android:id="@+id/text_temperature"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/celsius"
-                android:textStyle="bold"/>
+                android:text="@string/celsius" />
         </LinearLayout>
         <Button
             android:layout_width="match_parent"

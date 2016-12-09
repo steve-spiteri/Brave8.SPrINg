@@ -6,6 +6,7 @@ package brave8.spring;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,7 +32,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
-import java.util.Random;
 
 public class PageFragment extends Fragment implements OnItemSelectedListener {
 
@@ -69,17 +69,8 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     private int TWENTYFOUR_HOURS = 24;
     private int SEVEN_DAYS = 7;
     private int FOUR_WEEKS = 4;
-    private int X_AXIS_1 = 12;
 
     boolean isViewShown = false;
-
-
-    //fake data variables
-    double[] fakepower;
-    double[] faketemp;
-    double[] fakelight;
-    double[] fakebarometric;
-    double[] fakehumidity;
 
     View view;
 
@@ -90,7 +81,6 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
         fragment.setArguments(args);
         return fragment;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -266,35 +256,6 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
         }
         else{
 
-            //fake data-----------------------------------------------------------------------------
-            Random rn = new Random();
-            fakepower = new double[4000];
-            for (int i=0;i<fakepower.length;i++)
-            {
-                fakepower[i]= 1.0 + (20.0 - 1.0) * rn.nextDouble();
-            }
-            faketemp = new double[4000];
-            for (int i=0;i<faketemp.length;i++)
-            {
-                faketemp[i]= 1.0 + (20.0 - 1.0) * rn.nextDouble();
-            }
-            fakelight = new double[4000];
-            for (int i=0;i<fakelight.length;i++)
-            {
-                fakelight[i]= 0.0 + (100000.0 - 0.0) * rn.nextDouble();
-            }
-            fakebarometric = new double[4000];
-            for (int i=0;i<fakebarometric.length;i++)
-            {
-                fakebarometric[i]= 90.0 + (105.0 - 90.0) * rn.nextDouble();
-            }
-            fakehumidity = new double[4000];
-            for (int i=0;i<fakehumidity.length;i++)
-            {
-                fakehumidity[i]= 30.0 + (70.0 - 30.0) * rn.nextDouble();
-            }
-            //--------------------------------------------------------------------------------------
-
             spinner1 = (Spinner) view.findViewById(R.id.spinner1);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.source_array, android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -304,8 +265,6 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getActivity(), R.array.time_array, android.R.layout.simple_spinner_item);
             adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner2.setAdapter(adapter2);
-
-            //settings = getActivity().getSharedPreferences(LoginActivity.MY_PREFS_NAME, Context.MODE_PRIVATE);
 
             graph = (GraphView) view.findViewById(R.id.graph);
 
@@ -332,12 +291,19 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         insufficient.setText("");
+        int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+        if(screenSize == Configuration.SCREENLAYOUT_SIZE_XLARGE){
+            gridLabelRenderer.setTextSize((int)getResources().getDimension(R.dimen.small)); //reload style
+            gridLabelRenderer.setHorizontalAxisTitleTextSize((int)getResources().getDimension(R.dimen.small));
+            gridLabelRenderer.setVerticalAxisTitleTextSize((int)getResources().getDimension(R.dimen.small));
+        }
+
         if(spinner1.getSelectedItemPosition()==0){ //equals power
             graph.removeAllSeries(); //clear last graph
             //-------------------------------------------------------------------------------------------------------
             //POWER
             if(spinner2.getSelectedItemPosition() == 0) {
-                //real data
+
                 if(rowCount>=TWENTYFOUR_HOURS) {
                     values = new DataPoint[TWENTYFOUR_HOURS]; //Temporary (24 entries per day for now, will be 96)
                     for (int i = 0; i < values.length; i++) {
@@ -359,7 +325,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                 }
             }
             else if(spinner2.getSelectedItemPosition()  == 1) {
-                //fake data
+
                 if(rowCount>=ONE_WEEK) {
                     values = new DataPoint[SEVEN_DAYS]; //7 days
                     for (int i = 0, k = power.length - ONE_WEEK; i < values.length; i++, k += ONE_DAY) //7 entries, k=end of array - (24*4)*7
@@ -387,7 +353,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                 }
             }
             else if(spinner2.getSelectedItemPosition()  == 2) {
-                //fake data
+
                 if(rowCount>=ONE_MONTH) {
                     values = new DataPoint[FOUR_WEEKS]; //4 weeks
                     for (int i = 0, k = power.length - ONE_MONTH; i < values.length; i++, k += ONE_WEEK) //4 entries, k=end of array = ((24*4)*7)*4
@@ -421,7 +387,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             graph.removeAllSeries(); //clear last graph
 
             if(spinner2.getSelectedItemPosition() == 0) {
-                //REAL DATA
+
                 if(rowCount >= TWENTYFOUR_HOURS) {
                     values = new DataPoint[TWENTYFOUR_HOURS]; //Temporary (24 entries per day for nwo, will be 96)
                     for (int i = 0; i < values.length; i++) {
@@ -435,7 +401,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                     graph.getViewport().setMaxY(Math.ceil(getMax(humidity, TWENTYFOUR_HOURS)));
                     gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.humidity)); //set vertical axis title
                     gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.hour)); //set horizontal axis title
-                    gridLabelRenderer.setNumHorizontalLabels(X_AXIS_1); //set number of horizontal labels
+                    gridLabelRenderer.setNumHorizontalLabels(TWENTYFOUR_HOURS/2); //set number of horizontal labels
                     graph.getGridLabelRenderer().reloadStyles(); //reload style
                 }
                 else{
@@ -504,7 +470,6 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             graph.removeAllSeries(); //clear last graph
             if(spinner2.getSelectedItemPosition() == 0) {
                 if(rowCount >= TWENTYFOUR_HOURS) {
-                    //REAL DATA
                     values = new DataPoint[TWENTYFOUR_HOURS]; //Temporary (24 entries per day for nwo, will be 96)
                     for (int i = 0; i < values.length; i++) {
                         values[i] = new DataPoint(i, temperature[i]);
@@ -522,7 +487,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                         gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.temperature_c)); //set vertical axis title
                     }
                     gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.hour)); //set horizontal axis title
-                    gridLabelRenderer.setNumHorizontalLabels(X_AXIS_1); //set number of horizontal labels
+                    gridLabelRenderer.setNumHorizontalLabels(TWENTYFOUR_HOURS/2); //set number of horizontal labels
                     graph.getGridLabelRenderer().reloadStyles(); //reload style
                 }
                 else{
@@ -563,7 +528,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                 }
             }
             else if(spinner2.getSelectedItemPosition()  == 2) {
-                //fake data
+
                 if(rowCount >= ONE_MONTH) {
                     values = new DataPoint[FOUR_WEEKS]; //4 weeks
                     for (int i = 0, k = temperature.length - ONE_MONTH; i < values.length; i++, k += ONE_WEEK) //4 entries, k=end of array = ((24*4)*7)*4
@@ -603,7 +568,6 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
 
             if(spinner2.getSelectedItemPosition() == 0) {
                 if(rowCount >= TWENTYFOUR_HOURS) {
-                    //REAL DATA
                     values = new DataPoint[TWENTYFOUR_HOURS]; //Temporary (24 entries per day for nwo, will be 96)
                     for (int i = 0; i < values.length; i++) {
                         values[i] = new DataPoint(i, barometric[i]);
@@ -616,7 +580,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                     graph.getViewport().setMaxY(Math.ceil(getMax(barometric, TWENTYFOUR_HOURS)));
                     gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.barometric)); //set vertical axis title
                     gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.hour)); //set horizontal axis title
-                    gridLabelRenderer.setNumHorizontalLabels(X_AXIS_1); //set number of horizontal labels
+                    gridLabelRenderer.setNumHorizontalLabels(TWENTYFOUR_HOURS/2); //set number of horizontal labels
                     graph.getGridLabelRenderer().reloadStyles(); //reload style
                 }
                 else{
@@ -653,7 +617,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             }
             else if(spinner2.getSelectedItemPosition()  == 2) {
                 if(rowCount >= ONE_MONTH) {
-                    //fake data
+
                     values = new DataPoint[FOUR_WEEKS]; //4 weeks
                     for (int i = 0, k = barometric.length - ONE_MONTH; i < values.length; i++, k += ONE_WEEK) //4 entries, k=end of array = ((24*4)*7)*4
                     {
@@ -687,7 +651,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
 
             if(spinner2.getSelectedItemPosition() == 0) {
                 if(rowCount >= TWENTYFOUR_HOURS) {
-                    //REAL DATA
+
                     values = new DataPoint[TWENTYFOUR_HOURS]; //Temporary (24 entries per day for nwo, will be 96)
                     for (int i = 0; i < values.length; i++) {
                         values[i] = new DataPoint(i, light[i]);
@@ -700,7 +664,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                     graph.getViewport().setMaxY(Math.ceil(getMax(light, TWENTYFOUR_HOURS)));
                     gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.light)); //set vertical axis title
                     gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.hour)); //set horizontal axis title
-                    gridLabelRenderer.setNumHorizontalLabels(X_AXIS_1); //set number of horizontal labels
+                    gridLabelRenderer.setNumHorizontalLabels(TWENTYFOUR_HOURS/2); //set number of horizontal labels
                     graph.getGridLabelRenderer().reloadStyles(); //reload style
                 }
                 else{
@@ -737,7 +701,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             }
             else if(spinner2.getSelectedItemPosition()  == 2) {
                 if(rowCount >= ONE_MONTH) {
-                    //fake data
+
                     values = new DataPoint[FOUR_WEEKS]; //4 weeks
                     for (int i = 0, k = light.length - ONE_MONTH; i < values.length; i++, k += ONE_WEEK) //4 entries, k=end of array = ((24*4)*7)*4
                     {

@@ -42,7 +42,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/date_text"
-                style="@style/top_text"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/large"
+                android:textStyle="bold"
                 android:gravity="center_horizontal"/>
 
             <!--time-->
@@ -50,14 +52,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/time_text"
-                style="@style/top_text"
+                android:textSize="@dimen/large"
+                android:textStyle="bold"
                 android:gravity="center_horizontal"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/date_text">
+                android:layout_height="wrap_content" >
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -72,8 +73,8 @@
                         android:background="@drawable/blue_border"
                         android:orientation="horizontal">
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/pic_width"
+                            android:layout_height="@dimen/pic_length"
                             android:src="@drawable/ic_bolt"/>
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -107,8 +108,8 @@
                         android:background="@drawable/blue_border"
                         android:orientation="horizontal">
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/pic_width"
+                            android:layout_height="@dimen/pic_length"
                             android:src="@drawable/ic_raindrop"/>
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -119,7 +120,7 @@
                                 android:layout_height="wrap_content"
                                 android:id="@+id/humidity_data"
                                 android:textColor="@android:color/black"
-                                android:textSize="30sp"
+                                android:textSize="@dimen/large"
                                 android:textStyle="bold"/>
                             <TextView
                                 android:layout_width="wrap_content"
@@ -142,8 +143,8 @@
                         android:background="@drawable/blue_border"
                         android:orientation="horizontal">
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/pic_width"
+                            android:layout_height="@dimen/pic_length"
                             android:src="@drawable/thermometer"/>
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -154,7 +155,7 @@
                                 android:layout_height="wrap_content"
                                 android:id="@+id/temperature_data"
                                 android:textColor="@android:color/black"
-                                android:textSize="30sp"
+                                android:textSize="@dimen/large"
                                 android:textStyle="bold"/>
                             <TextView
                                 android:layout_width="wrap_content"
@@ -184,8 +185,8 @@
                         android:background="@drawable/blue_border"
                         android:orientation="horizontal">
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/pic_width"
+                            android:layout_height="@dimen/pic_length"
                             android:src="@drawable/ic_updown"/>
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -196,7 +197,7 @@
                                 android:layout_height="wrap_content"
                                 android:id="@+id/barometric_data"
                                 android:textColor="@android:color/black"
-                                android:textSize="30sp"
+                                android:textSize="@dimen/large"
                                 android:textStyle="bold"/>
                             <TextView
                                 android:layout_width="wrap_content"
@@ -219,8 +220,8 @@
                         android:background="@drawable/blue_border"
                         android:orientation="horizontal">
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/pic_width"
+                            android:layout_height="@dimen/pic_length"
                             android:src="@drawable/light_bulb"/>
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -231,7 +232,7 @@
                                 android:layout_height="wrap_content"
                                 android:id="@+id/light_data"
                                 android:textColor="@android:color/black"
-                                android:textSize="30sp"
+                                android:textSize="@dimen/large"
                                 android:textStyle="bold"/>
                             <TextView
                                 android:layout_width="wrap_content"

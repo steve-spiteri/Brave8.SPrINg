@@ -42,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_home_icon_silhouette);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_cube);
+
+        for (int i = 0; i < tabLayout.getTabCount(); i++)
+        {
+            //tabLayout.getChildAt(i).setPadding(100,100,100,100);
+        }
     }
 
 

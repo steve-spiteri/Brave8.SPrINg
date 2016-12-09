@@ -48,19 +48,21 @@ public class LoginActivity extends AppCompatActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
 
-        if(screenSize == Configuration.SCREENLAYOUT_SIZE_XLARGE){
-            status_layout = (LinearLayout) findViewById(R.id.status_layout);
-            login_layout = (LinearLayout) findViewById(R.id.login_layout);
-            status_layout.setVisibility(View.GONE);
-            login_layout.setVisibility(View.VISIBLE);
-            dbUser = (EditText) findViewById(R.id.username);
-            dbPass = (EditText) findViewById(R.id.password);
-            new CheckStatusTask().execute();
-        }
-        else
-        {
-            new CheckStatusTask().execute();
-        }
+        new CheckStatusTask().execute();
+
+//        if(screenSize == Configuration.SCREENLAYOUT_SIZE_XLARGE){
+//            status_layout = (LinearLayout) findViewById(R.id.status_layout);
+//            login_layout = (LinearLayout) findViewById(R.id.login_layout);
+//            status_layout.setVisibility(View.GONE);
+//            login_layout.setVisibility(View.VISIBLE);
+//            dbUser = (EditText) findViewById(R.id.username);
+//            dbPass = (EditText) findViewById(R.id.password);
+//            new CheckStatusTask().execute();
+//        }
+//        else
+//        {
+//            new CheckStatusTask().execute();
+//        }
 
 
         signIn = (Button) findViewById(R.id.sign_in);
