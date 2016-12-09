@@ -127,7 +127,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
         else {
             view = inflater.inflate(R.layout.activity_settings, container, false);
         }
-        new DownloadDataTask().execute("2");
+        new DownloadDataTask().execute("3");
         return view;
     }
 
@@ -339,7 +339,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                 }
                 else{
                     insufficient.setText(R.string.insufficient);
-                    insufficient.setText(View.VISIBLE);
+                    insufficient.setVisibility(View.VISIBLE);
                 }
             }
             else if(spinner2.getSelectedItemPosition()  == 1) {
