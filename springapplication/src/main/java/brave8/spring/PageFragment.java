@@ -239,7 +239,19 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                 barometric_text.setText(getResources().getString(R.string.barometric_date, barometric[barometric.length - 1]));
 
                 TextView light_text = (TextView) view.findViewById(R.id.light_data);
-                light_text.setText("Sunny"); //-------------------------------------------temp hard coded string
+                if (light[light.length-1]<3500)
+                {
+                    light_text.setText(R.string.night);
+                }
+                else if (light[light.length-1]<4200)
+                {
+                    light_text.setText(R.string.overcast);
+                }
+                else
+                {
+                    light_text.setText(R.string.sunny);
+                }
+
             }
         }
         else{
