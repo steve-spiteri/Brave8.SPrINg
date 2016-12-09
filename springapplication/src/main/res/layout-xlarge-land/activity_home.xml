@@ -84,7 +84,7 @@
                                 android:layout_height="wrap_content"
                                 android:id="@+id/power_data"
                                 android:textColor="@android:color/black"
-                                android:textSize="30sp"
+                                android:textSize="@dimen/large"
                                 android:textStyle="bold"/>
                             <TextView
                                 android:layout_width="wrap_content"
