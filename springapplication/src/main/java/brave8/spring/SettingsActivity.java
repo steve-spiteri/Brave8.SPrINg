@@ -1,12 +1,13 @@
+/**
+ * Brave 8, Project SPrINg
+ */
+
 package brave8.spring;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -24,25 +25,12 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Switch theme_switch = (Switch)findViewById(R.id.controls_application_theme);
-        final TextView theme_text = (TextView)findViewById(R.id.text_theme_name);
-        theme_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    //ThemeUtils.changeToTheme(SettingsActivity.this, ThemeUtils.DARK);
-                    theme_text.setText(R.string.dark_theme);
-                } else {
-                    //ThemeUtils.changeToTheme(SettingsActivity.this, ThemeUtils.LIGHT);
-                    theme_text.setText(R.string.light_theme);
-                }
-            }
-        });
 
         Switch temperature_switch = (Switch)findViewById(R.id.controls_change_temperature);
         final TextView temperature_text = (TextView)findViewById(R.id.text_temperature);
 
         SharedPreferences settings = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        if(settings.getString("temperature", "").equals("fahrenheit"))
+        if(settings.getString("temperature", "").equals("fahrenheit")) //text must be hardcoded here
         {
             temperature_switch.setChecked(true);
             temperature_text.setText(R.string.fahrenheit);
@@ -80,25 +68,9 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
-            case R.id.home:
-                Intent stuff = getIntent();
-                Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-                intent.putExtra("loginID", stuff.getIntExtra("loginId", 2));
-                startActivity(intent);
-                finishAffinity();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public boolean onSupportNavigateUp(){
-        Intent stuff = getIntent();
         Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-        intent.putExtra("loginID", stuff.getIntExtra("loginId", 2));
+        intent.putExtra("loginID", getIntent().getIntExtra("loginID", 0));
         startActivity(intent);
         finishAffinity();
         return true;
@@ -106,9 +78,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent stuff = getIntent();
         Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-        intent.putExtra("loginID", stuff.getIntExtra("loginId", 2));
+        intent.putExtra("loginID", getIntent().getIntExtra("loginID", 0));
         startActivity(intent);
         finishAffinity();
     }

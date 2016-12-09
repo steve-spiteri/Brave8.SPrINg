@@ -1,5 +1,8 @@
-package brave8.spring;
+/**
+ * Brave 8, Project SPrINg
+ */
 
+package brave8.spring;
 
 import android.content.Context;
 
