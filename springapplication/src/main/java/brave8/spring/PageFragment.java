@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -68,6 +69,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     Spinner spinner2;
     GridLabelRenderer gridLabelRenderer;
     TextView insufficient;
+    LinearLayout status_layout, main_layout;
 
     int[] idData;
     double[] power;
@@ -211,32 +213,42 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
         }
 
         if (mPage == 1) {
-           //Toast.makeText(getActivity(),String.valueOf(Math.ceil(getMax(power,24))),Toast.LENGTH_LONG).show();
             //home activity
 
-            //set date
-            TextView date_text = (TextView) view.findViewById(R.id.date_text);
-            date_text.setText(date[date.length-1]);
+            status_layout = (LinearLayout) view.findViewById(R.id.status_layout);
+            main_layout = (LinearLayout) view.findViewById(R.id.main_layout);
 
-            //set time
-            TextView time_text = (TextView) view.findViewById(R.id.time_text);
-            time_text.setText(time[time.length-1]);
+            if(rowCount==0)
+            {
+                insufficient = (TextView) view.findViewById(R.id.insufficient);
+                insufficient.setText("test");
+            }
+            else {
+                status_layout.setVisibility(View.GONE);
+                main_layout.setVisibility(View.VISIBLE);
+                //set date
+                TextView date_text = (TextView) view.findViewById(R.id.date_text);
+                date_text.setText(date[date.length - 1]);
 
-            TextView power_data = (TextView) view.findViewById(R.id.power_data);
-            power_data.setText(getResources().getString(R.string.power_data,power[power.length-1]));
+                //set time
+                TextView time_text = (TextView) view.findViewById(R.id.time_text);
+                time_text.setText(time[time.length - 1]);
 
-            TextView humidity_text = (TextView) view.findViewById(R.id.humidity_data);
-            humidity_text.setText(getResources().getString(R.string.humidity_data,humidity[humidity.length-1]));
+                TextView power_data = (TextView) view.findViewById(R.id.power_data);
+                power_data.setText(getResources().getString(R.string.power_data, power[power.length - 1]));
 
-            TextView temperature_text = (TextView) view.findViewById(R.id.temperature_data);
-            temperature_text.setText(getResources().getString(R.string.temperature_data,temperature[temperature.length-1],"C"));
+                TextView humidity_text = (TextView) view.findViewById(R.id.humidity_data);
+                humidity_text.setText(getResources().getString(R.string.humidity_data, humidity[humidity.length - 1]));
 
-            TextView barometric_text = (TextView) view.findViewById(R.id.barometric_data);
-            barometric_text.setText(getResources().getString(R.string.barometric_date,barometric[barometric.length-1]));
+                TextView temperature_text = (TextView) view.findViewById(R.id.temperature_data);
+                temperature_text.setText(getResources().getString(R.string.temperature_data, temperature[temperature.length - 1], "C"));
 
-            TextView light_text = (TextView) view.findViewById(R.id.light_data);
-            light_text.setText("Sunny"); //-------------------------------------------temp hard coded string
+                TextView barometric_text = (TextView) view.findViewById(R.id.barometric_data);
+                barometric_text.setText(getResources().getString(R.string.barometric_date, barometric[barometric.length - 1]));
 
+                TextView light_text = (TextView) view.findViewById(R.id.light_data);
+                light_text.setText("Sunny"); //-------------------------------------------temp hard coded string
+            }
         }
         else{
 
@@ -285,13 +297,13 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
 
             gridLabelRenderer = graph.getGridLabelRenderer();
             if (Build.VERSION.SDK_INT >= 23) {
-                gridLabelRenderer.setGridColor(ContextCompat.getColor(getContext(), R.color.black));
-                gridLabelRenderer.setHorizontalLabelsColor(ContextCompat.getColor(getContext(), R.color.black));
-                gridLabelRenderer.setVerticalLabelsColor(ContextCompat.getColor(getContext(), R.color.black));
+                gridLabelRenderer.setGridColor(ContextCompat.getColor(getContext(), android.R.color.black));
+                gridLabelRenderer.setHorizontalLabelsColor(ContextCompat.getColor(getContext(), android.R.color.black));
+                gridLabelRenderer.setVerticalLabelsColor(ContextCompat.getColor(getContext(), android.R.color.black));
             } else {
-                gridLabelRenderer.setGridColor(getResources().getColor(R.color.black));
-                gridLabelRenderer.setHorizontalLabelsColor(getResources().getColor(R.color.black));
-                gridLabelRenderer.setVerticalLabelsColor(getResources().getColor(R.color.black));
+                gridLabelRenderer.setGridColor(getResources().getColor(android.R.color.black));
+                gridLabelRenderer.setHorizontalLabelsColor(getResources().getColor(android.R.color.black));
+                gridLabelRenderer.setVerticalLabelsColor(getResources().getColor(android.R.color.black));
             }
             graph.getGridLabelRenderer().reloadStyles();
 

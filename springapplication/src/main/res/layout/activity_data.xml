@@ -1,58 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_main"
-    android:background="@color/white"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:fillViewport="true">
 
-    <LinearLayout
-        android:id="@+id/topPanel"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/activity_main"
+        android:background="@android:color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/blue_border">
-        <Spinner
-            android:id="@+id/spinner1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            android:text="from the last"/>
-        <Spinner
-            android:id="@+id/spinner2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:spinnerMode="dropdown"
-            android:textColor="@android:color/black"/>
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/topPanel">
-
-        <com.jjoe64.graphview.GraphView
-            android:id="@+id/graph"
-            android:layout_below="@+id/topPanel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/insufficient"
+        <!--top panel-->
+        <LinearLayout
+            android:id="@+id/topPanel"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColor="@android:color/holo_red_dark"
-            android:textStyle="bold"
-            android:textSize="@dimen/small"
-            android:gravity="center"
-            android:visibility="invisible"/>
+            android:layout_height="wrap_content"
+            android:background="@drawable/blue_border">
 
-    </FrameLayout>
-</RelativeLayout>
+            <!--source spinner-->
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:text="from the last"/>
+
+            <!--time spinner-->
+            <Spinner
+                android:id="@+id/spinner2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:textColor="@android:color/black"/>
+
+        </LinearLayout>
+
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/topPanel">
+
+            <!--graph-->
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/graph"
+                android:layout_below="@+id/topPanel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <!--insufficient-->
+            <TextView
+                android:id="@+id/insufficient"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/holo_red_dark"
+                android:textStyle="bold"
+                android:textSize="@dimen/small"
+                android:gravity="center"
+                android:visibility="invisible"/>
+
+        </FrameLayout>
+    </RelativeLayout>
+</ScrollView>

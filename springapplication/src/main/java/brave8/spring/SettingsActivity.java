@@ -21,20 +21,6 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        Switch theme_switch = (Switch)findViewById(R.id.controls_application_theme);
-        final TextView theme_text = (TextView)findViewById(R.id.text_theme_name);
-        theme_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    //ThemeUtils.changeToTheme(SettingsActivity.this, ThemeUtils.DARK);
-                    theme_text.setText(R.string.dark_theme);
-                } else {
-                    //ThemeUtils.changeToTheme(SettingsActivity.this, ThemeUtils.LIGHT);
-                    theme_text.setText(R.string.light_theme);
-                }
-            }
-        });
-
         Switch temperature_switch = (Switch)findViewById(R.id.controls_change_temperature);
         final TextView temperature_text = (TextView)findViewById(R.id.text_temperature);
 
