@@ -170,7 +170,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
     }
 
     public void displayData(String response, boolean newData) {
-        SolarDataSource solarDataSource = new SolarDataSource(getContext());
+        SolarDataSource solarDataSource = new SolarDataSource();
         if(newData) {
             try {
                 solarList = solarDataSource.createSolarList(response);
@@ -239,7 +239,19 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                 barometric_text.setText(getResources().getString(R.string.barometric_date, barometric[barometric.length - 1]));
 
                 TextView light_text = (TextView) view.findViewById(R.id.light_data);
-                light_text.setText("Sunny"); //-------------------------------------------temp hard coded string
+                if (light[light.length-1]<3500)
+                {
+                    light_text.setText(R.string.night);
+                }
+                else if (light[light.length-1]<4200)
+                {
+                    light_text.setText(R.string.overcast);
+                }
+                else
+                {
+                    light_text.setText(R.string.sunny);
+                }
+
             }
         }
         else{
@@ -746,7 +758,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
 
     }
 
-    private double getMax(double[] array,int values) {
+    public double getMax(double[] array,int values) {
         double max = 0.0;
         for (int x=(array.length-values);x<array.length;x++)
         {
