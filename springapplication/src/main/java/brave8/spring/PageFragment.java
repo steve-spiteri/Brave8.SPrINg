@@ -471,19 +471,28 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             if(spinner2.getSelectedItemPosition() == 0) {
                 if(rowCount >= TWENTYFOUR_HOURS) {
                     values = new DataPoint[TWENTYFOUR_HOURS]; //Temporary (24 entries per day for nwo, will be 96)
-                    for (int i = 0; i < values.length; i++) {
-                        values[i] = new DataPoint(i, temperature[i]);
+                    for (int i = 0; i < values.length; i++)
+                    {
+                        if(settings.getString("temperature", "").equals("fahrenheit"))
+                        {
+                            values[i] = new DataPoint(i, (temperature[i] * 1.8) + 32);
+                        }
+                        else
+                        {
+                            values[i] = new DataPoint(i, temperature[i]);
+                        }
                     }
                     graph.removeAllSeries(); //clear last graph
                     series = new LineGraphSeries<>(values); //add values to series
                     graph.addSeries(series); //add series to graph
                     graph.getViewport().setXAxisBoundsManual(true);
                     graph.getViewport().setMaxX(TWENTYFOUR_HOURS); //so you can see last label
-                    graph.getViewport().setMaxY(Math.ceil(getMax(temperature, TWENTYFOUR_HOURS)));
                     if(settings.getString("temperature", "").equals("fahrenheit")) {
+                        graph.getViewport().setMaxY(Math.ceil(getMaxF(temperature, TWENTYFOUR_HOURS)));
                         gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.temperature_f)); //set vertical axis title
                     }
                     else {
+                        graph.getViewport().setMaxY(Math.ceil(getMax(temperature, TWENTYFOUR_HOURS)));
                         gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.temperature_c)); //set vertical axis title
                     }
                     gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.hour)); //set horizontal axis title
@@ -498,24 +507,31 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             else if(spinner2.getSelectedItemPosition()  == 1) {
                 if(rowCount >= ONE_WEEK) {
                     values = new DataPoint[SEVEN_DAYS]; //7 days
+
                     for (int i = 0, k = temperature.length - ONE_WEEK; i < values.length; i++, k += ONE_DAY) //7 entries, k=end of array - (24*4)*7
                     {
                         for (int x = 0; x < ONE_DAY; x++) //combine 96 15 min entries for 1 day
                         {
                             num += temperature[k + x]; //add 96 entries into one variable
                         }
-                        values[i] = new DataPoint(i, num / ONE_DAY); //average the 96 numbers
+                        if(settings.getString("temperature", "").equals("fahrenheit")){
+                            values[i] = new DataPoint((i * 1.8) + 32, num / ONE_DAY); //average the 96 numbers
+                        }
+                        else{
+                            values[i] = new DataPoint(i, num / ONE_DAY); //average the 96 numbers
+                        }
                         num = 0.0; //reset num so it can be used again
                     }
                     series = new LineGraphSeries<>(values);
                     graph.addSeries(series);
                     graph.getViewport().setXAxisBoundsManual(true);
                     graph.getViewport().setMaxX(SEVEN_DAYS); //so you can see last label
-                    graph.getViewport().setMaxY(Math.ceil(getMax(temperature, ONE_WEEK)));
                     if(settings.getString("temperature", "").equals("fahrenheit")) {
+                        graph.getViewport().setMaxY(Math.ceil(getMaxF(temperature, ONE_WEEK)));
                         gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.temperature_f)); //set vertical axis title
                     }
                     else {
+                        graph.getViewport().setMaxY(Math.ceil(getMax(temperature, ONE_WEEK)));
                         gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.temperature_c)); //set vertical axis title
                     }
                     gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.day)); //set horizontal axis title
@@ -537,18 +553,24 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                         {
                             num += temperature[k + x]; //add 672 entries into one variable
                         }
-                        values[i] = new DataPoint(i, num / ONE_WEEK); //average the 672 numbers
+                        if(settings.getString("temperature", "").equals("fahrenheit")) {
+                            values[i] = new DataPoint((i * 1.8) + 32, num / ONE_WEEK); //average the 672 numbers
+                        }
+                        else {
+                            values[i] = new DataPoint(i, num / ONE_WEEK); //average the 672 numbers
+                        }
                         num = 0.0; //reset num so it can be used again
                     }
                     series = new LineGraphSeries<>(values);
                     graph.addSeries(series);
                     graph.getViewport().setXAxisBoundsManual(true);
                     graph.getViewport().setMaxX(FOUR_WEEKS); //so you can see last label
-                    graph.getViewport().setMaxY(Math.ceil(getMax(temperature, ONE_MONTH)));
                     if(settings.getString("temperature", "").equals("fahrenheit")) {
+                        graph.getViewport().setMaxY(Math.ceil(getMaxF(temperature, ONE_MONTH)));
                         gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.temperature_f)); //set vertical axis title
                     }
                     else {
+                        graph.getViewport().setMaxY(Math.ceil(getMax(temperature, ONE_MONTH)));
                         gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.temperature_c)); //set vertical axis title
                     }
                     gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.week)); //set horizontal axis title
@@ -739,6 +761,18 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             if (array[x]>max)
             {
                 max = array[x];
+            }
+        }
+        return max;
+    }
+
+    public double getMaxF(double[] array,int values) {
+        double max = 0.0;
+        for (int x=(array.length-values);x<array.length;x++)
+        {
+            if (((array[x] * 1.8) + 32) > max)
+            {
+                max = ((array[x] * 1.8) + 32);
             }
         }
         return max;
