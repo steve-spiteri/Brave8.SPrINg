@@ -6,4 +6,12 @@
     <dimen name="activity_vertical_margin">32dp</dimen>
     <dimen name="large">64dp</dimen>
     <dimen name="small">32dp</dimen>
+    <dimen name="pic_width">150dp</dimen>
+    <dimen name="pic_length">150dp</dimen>
+    <dimen name="login_pic_width">500dp</dimen>
+    <dimen name="login_pic_length">400dp</dimen>
+    <dimen name="tab_height">100dp</dimen>
+    <dimen name="about_app_pic_width">250dp</dimen>
+    <dimen name="about_app_pic_height">200dp</dimen>
+
 </resources>

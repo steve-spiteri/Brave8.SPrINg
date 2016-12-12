@@ -48,20 +48,7 @@ public class LoginActivity extends AppCompatActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
 
-        if(screenSize == Configuration.SCREENLAYOUT_SIZE_XLARGE){
-            status_layout = (LinearLayout) findViewById(R.id.status_layout);
-            login_layout = (LinearLayout) findViewById(R.id.login_layout);
-            status_layout.setVisibility(View.GONE);
-            login_layout.setVisibility(View.VISIBLE);
-            dbUser = (EditText) findViewById(R.id.username);
-            dbPass = (EditText) findViewById(R.id.password);
-            new CheckStatusTask().execute();
-        }
-        else
-        {
-            new CheckStatusTask().execute();
-        }
-
+        new CheckStatusTask().execute();
 
         signIn = (Button) findViewById(R.id.sign_in);
         signIn.setOnClickListener(new View.OnClickListener() {
@@ -71,16 +58,13 @@ public class LoginActivity extends AppCompatActivity {
                 dbUser = (EditText) findViewById(R.id.username);
                 dbPass = (EditText) findViewById(R.id.password);
 
-                String dbUserStr = dbUser.getText().toString();
-                String dbPassStr = dbPass.getText().toString();
-
                 boolean loginError = false;
-                if(dbUserStr.equals("")){
+                if(isEmpty(dbUser.getText().toString())){
                     dbUser.setError(getString(R.string.user_empty_error));
                     loginError = true;
                 }
 
-                if(dbPassStr.equals("")){
+                if(isEmpty(dbUser.getText().toString())){
                     dbPass.setError(getString(R.string.pass_empty_error));
                     loginError = true;
                 }
@@ -91,6 +75,15 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public boolean isEmpty(String string)
+    {
+        if(string.trim().length()>0)
+        {
+            return false;
+        }
+        return true;
     }
 
     private class CheckStatusTask extends AsyncTask<Void, Void, Integer> {

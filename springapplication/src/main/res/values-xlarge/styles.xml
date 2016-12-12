@@ -11,39 +11,11 @@
         <item name="android:textSize">40sp</item>
     </style>
 
-    <!-- login activity -->
-    <style name="login_text">
-        <item name="android:textStyle">bold</item>
+    <style name="Text_Tab" parent="TextAppearance.Design.Tab">
+        <!-- Customize your theme here. -->
+
         <item name="android:textSize">40sp</item>
     </style>
-
-    <!-- home activity -->
-    <style name="top_text">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">40sp</item>
-    </style>
-
-    <style name="data_text">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">60sp</item>
-    </style>
-
-    <style name="measurement_text">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">20sp</item>
-    </style>
-
-    <!-- settings activity -->
-    <style name="settings_text">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">30sp</item>
-    </style>
-
-    <style name="information_text">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">20sp</item>
-    </style>
-
 
 
 

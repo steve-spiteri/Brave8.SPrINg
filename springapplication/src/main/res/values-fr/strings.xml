@@ -53,6 +53,7 @@
     <string name="hour">Heure</string>
     <string name="day">Journée</string>
     <string name="week">Semaine</string>
+    <string name="from_the_last"> depuis le dernier</string>
 
     <string-array name="source_array">
         <item>Puissance</item>
