@@ -20,7 +20,6 @@ import static brave8.spring.LoginActivity.MY_PREFS_NAME;
 
 public class SettingsActivity extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,5 +89,4 @@ public class SettingsActivity extends AppCompatActivity {
         startActivity(intent);
         finishAffinity();
     }
-
 }

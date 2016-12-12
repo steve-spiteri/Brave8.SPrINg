@@ -1,7 +1,5 @@
 /**
- * Name: Steven Spiteri
- * Student #: N00248047
- * Assignment #: 3
+ * Brave 8, Project SPrINg
  */
 
 package brave8.spring;
