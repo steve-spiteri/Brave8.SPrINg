@@ -314,6 +314,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                     graph.getViewport().setXAxisBoundsManual(true);
                     graph.getViewport().setMaxX(TWENTYFOUR_HOURS); //so you can see last label
                     graph.getViewport().setMaxY(Math.ceil(getMax(power, TWENTYFOUR_HOURS)));
+                    graph.getViewport().setMinY(0);
                     gridLabelRenderer.setVerticalAxisTitle(getResources().getString(R.string.voltage)); //set vertical axis title
                     gridLabelRenderer.setHorizontalAxisTitle(getResources().getString(R.string.hour)); //set horizontal axis title
                     gridLabelRenderer.setNumHorizontalLabels(TWENTYFOUR_HOURS / 2); //set number of horizontal labels
