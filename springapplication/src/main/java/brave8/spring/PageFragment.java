@@ -516,7 +516,8 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                             num += temperature[k + x]; //add 96 entries into one variable
                         }
                         if(settings.getString("temperature", "").equals("fahrenheit")){
-                            values[i] = new DataPoint((i * 1.8) + 32, num / ONE_DAY); //average the 96 numbers
+                            //values[i] = new DataPoint((i * 1.8) + 32, num / ONE_DAY); //average the 96 numbers
+                            values[i] = new DataPoint(i,((num * 1.8) + (32 * ONE_DAY)) / ONE_DAY);
                         }
                         else{
                             values[i] = new DataPoint(i, num / ONE_DAY); //average the 96 numbers
@@ -555,7 +556,8 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                             num += temperature[k + x]; //add 672 entries into one variable
                         }
                         if(settings.getString("temperature", "").equals("fahrenheit")) {
-                            values[i] = new DataPoint((i * 1.8) + 32, num / ONE_WEEK); //average the 672 numbers
+                            //values[i] = new DataPoint((i * 1.8) + 32, num / ONE_WEEK); //average the 672 numbers
+                            values[i] = new DataPoint(i,((num * 1.8) + (32 * ONE_WEEK)) / ONE_WEEK);
                         }
                         else {
                             values[i] = new DataPoint(i, num / ONE_WEEK); //average the 672 numbers
@@ -675,7 +677,7 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
             if(spinner2.getSelectedItemPosition() == 0) {
                 if(rowCount >= TWENTYFOUR_HOURS) {
 
-                    values = new DataPoint[TWENTYFOUR_HOURS]; //Temporary (24 entries per day for nwo, will be 96)
+                    values = new DataPoint[TWENTYFOUR_HOURS]; //Temporary (24 entries per day for now, will be 96)
                     for (int i = 0; i < values.length; i++) {
                         values[i] = new DataPoint(i, light[i]);
                     }
@@ -728,11 +730,11 @@ public class PageFragment extends Fragment implements OnItemSelectedListener {
                     values = new DataPoint[FOUR_WEEKS]; //4 weeks
                     for (int i = 0, k = light.length - ONE_MONTH; i < values.length; i++, k += ONE_WEEK) //4 entries, k=end of array = ((24*4)*7)*4
                     {
-                        for (int x = 0; x < ONE_MONTH; x++) //combine 672 15 min entries int one vatiable
+                        for (int x = 0; x < ONE_WEEK; x++) //combine 672 15 min entries int one vatiable
                         {
                             num += light[k + x]; //add 672 entries into one variable
                         }
-                        values[i] = new DataPoint(i, num / ONE_MONTH); //average the 672 numbers
+                        values[i] = new DataPoint(i, num / ONE_WEEK); //average the 672 numbers
                         num = 0.0; //reset num so it can be used again
                     }
                     series = new LineGraphSeries<>(values);
